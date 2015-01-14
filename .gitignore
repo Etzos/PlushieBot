@@ -1,0 +1,19 @@
+# Python Files
+__pycache__/
+*.pyc
+
+# KDevelop Files
+*.kdev4
+.kdev4/
+
+# Kate Files
+*.kate-swp
+
+# Program Files
+*.db
+
+# System Files
+.directory
+
+# Plushie Excludes
+config.json
