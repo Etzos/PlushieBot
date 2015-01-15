@@ -100,7 +100,7 @@ class HangmanPlugin(PlushiePlugin):
         word = self.word.lower()
         if guess in self.guessedLetters:
             ctx.msg("You have already guessed the letter '{:s}'".format(args[0]), msg.replyTo)
-            ctx.msg(self.displayStatus, msg.replyTo)
+            ctx.msg(self.displayStatus(), msg.replyTo)
             return
 
         self.guessedLetters.append(guess)
