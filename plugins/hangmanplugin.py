@@ -39,11 +39,11 @@ class HangmanPlugin(PlushiePlugin):
 
                 if not self.word:
                     self.word = args[1]
+                    self.guessedLetters = []
+                    self.misses = 0
                     for words in range(2, len(args)-2)
                         self.word = self.word + " " + args[words]
-                        # Make sure settings are back to beginning
-                        self.guessedLetters = []
-                        self.misses = 0
+                        # Make sure settings are back to beginnin
                         ctx.msg("{:s} has given me a word. Try guessing some letters! (!guess <letter>)".format(msg.player))
                         if not self.checkWord(ctx.config["hangman"]["api-key"], self.word):
                             ctx.msg("This 'word' was not found in Wordnik!")
