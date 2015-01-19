@@ -22,31 +22,31 @@ class HangmanPlugin(PlushiePlugin):
 
         if msg.isWhisper:
             if len(args) < 1:
-                    ctx.msg("Not enough arguments. Please choose the game mode(Public/Private) and give me only one word for everyone to guess.", msg.player)
+                    ctx.msg("Not enough arguments. Please choose the game mode(Public/Private) and give me some word(s) for everyone to guess.", msg.player)
                     return
-            if len(args) > 2:
-                ctx.msg("Too many arguments. Please choose the game mode(Public/Private) and give me only one word for everyone to guess.", msg.player)
-                return
 
             if args[0].lower() == "private":
                 ctx.msg("You cannot play hangman solely from whisper... Yet.", msg.player)
                 return
             elif args[0].lower() == "public":
                 if len(args) < 2:
-                    ctx.msg("Not enough arguments. Please choose the game mode(Public/Private) and give me only one word for everyone to guess.", msg.player)
+                    ctx.msg("Not enough arguments. Please choose the game mode(Public/Private) and give me some word(s) for everyone to guess.", msg.player)
                     return
-                if not args[1].isalpha():
-                    ctx.msg("The word you have told me contains characters other than letters. Please only use letters.", msg.player)
-                    return
+                for argnum in range(1, len(args)-1):
+                    if not args[argnum].isalpha():
+                        ctx.msg("The word you have told me contains characters other than letters. Please only use letters.", msg.player)
+                        return
 
                 if not self.word:
                     self.word = args[1]
-                    # Make sure settings are back to beginning
-                    self.guessedLetters = []
-                    self.misses = 0
-                    ctx.msg("{:s} has given me a word. Try guessing some letters! (!guess <letter>)".format(msg.player))
-                    if not self.checkWord(ctx.config["hangman"]["api-key"], self.word):
-                        ctx.msg("This 'word' was not found in Wordnik!")
+                    for words in range(2, len(args)-2)
+                        self.word = self.word + " " + args[words]
+                        # Make sure settings are back to beginning
+                        self.guessedLetters = []
+                        self.misses = 0
+                        ctx.msg("{:s} has given me a word. Try guessing some letters! (!guess <letter>)".format(msg.player))
+                        if not self.checkWord(ctx.config["hangman"]["api-key"], self.word):
+                            ctx.msg("This 'word' was not found in Wordnik!")
                 else:
                     ctx.msg("A game of hangman is already in progress, use `!guess <letter>` to guess.", msg.player)
             else:
@@ -148,7 +148,7 @@ class HangmanPlugin(PlushiePlugin):
     def wordDisplay(self):
         res = ""
         for l in self.word:
-            if l.lower() in self.guessedLetters:
+            if l.lower() in self.guessedLetters or l == " ":
                res += l
             else:
                 res += "-"
