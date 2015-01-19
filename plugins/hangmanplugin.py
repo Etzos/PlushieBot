@@ -45,8 +45,7 @@ class HangmanPlugin(PlushiePlugin):
                     self.guessedLetters = []
                     self.misses = 0
                     ctx.msg("{:s} has given me a word. Try guessing some letters! (!guess <letter>)".format(msg.player))
-                    Legitimate = checkWord(self.word)
-                    if not Legitimate:
+                    if not self.checkWord(ctx.config["hangman"]["api-key"], self.word):
                         ctx.msg("This 'word' was not found in Wordnik!")
                 else:
                     ctx.msg("A game of hangman is already in progress, use `!guess <letter>` to guess.", msg.player)
@@ -184,7 +183,7 @@ class HangmanPlugin(PlushiePlugin):
     def checkWord(api_key, minCorpus=6000, maxCorpus=-1, minLength=1, maxLength=-1):
         siteURL = "http://api.wordnik.com/v4/words.json/search"
         paramaters = urllib.parse.urlencode({
-            "query": checkWord[0]
+            "query": checkWord[1]
             "minCorpusCount": minCorpus,
             "maxCorpusCount": maxCorpus,
             "minDictionaryCount": 0,
