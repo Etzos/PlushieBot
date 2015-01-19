@@ -180,10 +180,10 @@ class HangmanPlugin(PlushiePlugin):
         return jparse['word']
 
     @staticmethod
-    def checkWord(api_key, minCorpus=6000, maxCorpus=-1, minLength=1, maxLength=-1):
+    def checkWord(api_key, word, minCorpus=6000, maxCorpus=-1, minLength=1, maxLength=-1):
         siteURL = "http://api.wordnik.com/v4/words.json/search"
         paramaters = urllib.parse.urlencode({
-            "query": checkWord[1]
+            "query": word
             "minCorpusCount": minCorpus,
             "maxCorpusCount": maxCorpus,
             "minDictionaryCount": 0,
