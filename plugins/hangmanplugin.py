@@ -45,6 +45,9 @@ class HangmanPlugin(PlushiePlugin):
                     self.guessedLetters = []
                     self.misses = 0
                     ctx.msg("{:s} has given me a word. Try guessing some letters! (!guess <letter>)".format(msg.player))
+                    Legitimate = checkWord(self.word)
+                    if not Legitimate:
+                        ctx.msg("This 'word' was not found in Wordnik!")
                 else:
                     ctx.msg("A game of hangman is already in progress, use `!guess <letter>` to guess.", msg.player)
             else:
@@ -176,3 +179,21 @@ class HangmanPlugin(PlushiePlugin):
         jobj = res.read().decode('utf-8')
         jparse = json.loads(jobj)
         return jparse['word']
+
+    @staticmethod
+    def checkWord(api_key, minCorpus=6000, maxCorpus=-1, minLength=5, maxLength=20):
+        siteURL = "http://api.wordnik.com/v4/words.json/randomWord"
+        paramaters = urllib.parse.urlencode({
+            "query": checkWord[0]
+            "minCorpusCount": minCorpus,
+            "maxCorpusCount": maxCorpus,
+            "minDictionaryCount": 0,
+            "maxDictionaryCount": -1,
+            "minLength": minLength,
+            "maxLength": maxLength,
+            "api_key": api_key
+        })
+        res = urllib.request.urlopen(siteURL + "?{:s}".format(paramaters))
+        jobj = res.read().decode('utf-8')
+        jparse = json.loads(jobj)
+        return not jparse['totalResults'] == 0
