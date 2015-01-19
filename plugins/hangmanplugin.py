@@ -8,7 +8,7 @@ import json
 class HangmanPlugin(PlushiePlugin):
     name = "Hangman Plugin"
     description = "Play a game of hangman"
-    authors = ["Garth", "WhiteKitsune"]
+    authors = ["Garth", "WhiteKitsune", "Arik1"]
 
     def __init__(self):
         self.word = None
@@ -181,8 +181,8 @@ class HangmanPlugin(PlushiePlugin):
         return jparse['word']
 
     @staticmethod
-    def checkWord(api_key, minCorpus=6000, maxCorpus=-1, minLength=5, maxLength=20):
-        siteURL = "http://api.wordnik.com/v4/words.json/randomWord"
+    def checkWord(api_key, minCorpus=6000, maxCorpus=-1, minLength=1, maxLength=-1):
+        siteURL = "http://api.wordnik.com/v4/words.json/search"
         paramaters = urllib.parse.urlencode({
             "query": checkWord[0]
             "minCorpusCount": minCorpus,
