@@ -46,7 +46,7 @@ class HangmanPlugin(PlushiePlugin):
                     badwords = 0
                     for arg in args[1:]:
                         if not self.checkWord(ctx.config["hangman"]["api-key"], arg):
-                            badwords = badwords + 1
+                            badwords += 1
                     if badwords == 1:
                         ctx.msg("There was 1 'word' that was not found in Wordnik!")
                     else:
