@@ -32,21 +32,25 @@ class HangmanPlugin(PlushiePlugin):
                 if len(args) < 2:
                     ctx.msg("Not enough arguments. Please choose the game mode(Public/Private) and give me some word(s) for everyone to guess.", msg.player)
                     return
-                for argnum in range(1, len(args)-1):
-                    if not args[argnum].isalpha():
+                for arg in args[1:]:
+                    if not arg.isalpha():
                         ctx.msg("The word you have told me contains characters other than letters. Please only use letters.", msg.player)
                         return
 
                 if not self.word:
-                    self.word = args[1]
+                    self.word = " ".join(args[1:])
                     self.guessedLetters = []
                     self.misses = 0
-                    for words in range(2, len(args)-2)
-                        self.word = self.word + " " + args[words]
-                        # Make sure settings are back to beginnin
-                        ctx.msg("{:s} has given me a word. Try guessing some letters! (!guess <letter>)".format(msg.player))
-                        if not self.checkWord(ctx.config["hangman"]["api-key"], self.word):
-                            ctx.msg("This 'word' was not found in Wordnik!")
+                    # Make sure settings are back to beginning
+                    ctx.msg("{:s} has given me a word. Try guessing some letters! (!guess <letter>)".format(msg.player))
+                    badwords = 0
+                    for arg in args[1:]:
+                        if not self.checkWord(ctx.config["hangman"]["api-key"], arg):
+                            badwords = badwords + 1
+                    if badwords == 1:
+                        ctx.msg("There was 1 'word' that was not found in Wordnik!")
+                    else:
+                        ctx.msg("There were "..badwords.." 'words' that were not found in Wordnik!")
                 else:
                     ctx.msg("A game of hangman is already in progress, use `!guess <letter>` to guess.", msg.player)
             else:
