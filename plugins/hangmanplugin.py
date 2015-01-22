@@ -50,7 +50,7 @@ class HangmanPlugin(PlushiePlugin):
                     if badwords == 1:
                         ctx.msg("There was 1 'word' that was not found in Wordnik!")
                     else:
-                        ctx.msg("There were "..badwords.." 'words' that were not found in Wordnik!")
+                        ctx.msg("There were {:d} 'words' that were not found in Wordnik!").format(badwords)
                 else:
                     ctx.msg("A game of hangman is already in progress, use `!guess <letter>` to guess.", msg.player)
             else:
