@@ -188,7 +188,7 @@ class HangmanPlugin(PlushiePlugin):
     def checkWord(api_key, word, minCorpus=6000, maxCorpus=-1, minLength=1, maxLength=-1):
         siteURL = "http://api.wordnik.com/v4/words.json/search"
         paramaters = urllib.parse.urlencode({
-            "query": word
+            "query": word,
             "minCorpusCount": minCorpus,
             "maxCorpusCount": maxCorpus,
             "minDictionaryCount": 0,
