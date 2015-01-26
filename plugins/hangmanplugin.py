@@ -160,6 +160,8 @@ class HangmanPlugin(PlushiePlugin):
 
     def wordComplete(self):
         for l in self.word:
+            if l == " ":
+                continue
             if not l.lower() in self.guessedLetters:
                 return False
         return True
