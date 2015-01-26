@@ -46,7 +46,7 @@ class HangmanPlugin(PlushiePlugin):
                     self.misses = 0
                     # Make sure settings are back to beginning
                     ctx.msg("{:s} has given me a word. Try guessing some letters! (!guess <letter>)".format(msg.player))
-                    
+
                     if badwords == 1:
                         ctx.msg("There was 1 'word' that was not found in Wordnik!")
                     else:
@@ -136,7 +136,6 @@ class HangmanPlugin(PlushiePlugin):
     @plushieCmd("word", "getword")
     def printWord(self, ctx, msg):
         try:
-            print(ctx.config["hangman"]["api-key"])
             word = HangmanPlugin.getWord(ctx.config["hangman"]["api-key"])
         except:
             word = "No word."
@@ -179,7 +178,7 @@ class HangmanPlugin(PlushiePlugin):
             "maxLength": maxLength,
             "api_key": api_key
         })
-        res = urllib.request.urlopen(siteURL + "?{:s}".format(paramaters))
+        res = urllib.request.urlopen("{:s}?{:s}".format(siteURL, paramaters))
         jobj = res.read().decode('utf-8')
         jparse = json.loads(jobj)
         return jparse['word']
@@ -188,7 +187,6 @@ class HangmanPlugin(PlushiePlugin):
     def checkWord(api_key, word, minCorpus=6000, maxCorpus=-1, minLength=1, maxLength=-1):
         siteURL = "http://api.wordnik.com/v4/words.json/search"
         paramaters = urllib.parse.urlencode({
-            "query": word,
             "minCorpusCount": minCorpus,
             "maxCorpusCount": maxCorpus,
             "minDictionaryCount": 0,
@@ -197,7 +195,7 @@ class HangmanPlugin(PlushiePlugin):
             "maxLength": maxLength,
             "api_key": api_key
         })
-        res = urllib.request.urlopen(siteURL + "?{:s}".format(paramaters))
+        res = urllib.request.urlopen("{:s}/{:s}?{:s}".format(siteURL, word, paramaters))
         jobj = res.read().decode('utf-8')
         jparse = json.loads(jobj)
         return not jparse['totalResults'] == 0
