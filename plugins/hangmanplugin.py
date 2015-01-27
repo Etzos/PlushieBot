@@ -8,7 +8,7 @@ import json
 class HangmanPlugin(PlushiePlugin):
     name = "Hangman Plugin"
     description = "Play a game of hangman"
-    authors = ["Garth", "WhiteKitsune"]
+    authors = ["Garth", "WhiteKitsune", "Arik1"]
 
     def __init__(self):
         self.word = None
@@ -22,29 +22,36 @@ class HangmanPlugin(PlushiePlugin):
 
         if msg.isWhisper:
             if len(args) < 1:
-                    ctx.msg("Not enough arguments. Please choose the game mode(Public/Private) and give me only one word for everyone to guess.", msg.player)
+                    ctx.msg("Not enough arguments. Please choose the game mode(Public/Private) and give me some word(s) for everyone to guess.", msg.player)
                     return
-            if len(args) > 2:
-                ctx.msg("Too many arguments. Please choose the game mode(Public/Private) and give me only one word for everyone to guess.", msg.player)
-                return
 
             if args[0].lower() == "private":
                 ctx.msg("You cannot play hangman solely from whisper... Yet.", msg.player)
                 return
             elif args[0].lower() == "public":
                 if len(args) < 2:
-                    ctx.msg("Not enough arguments. Please choose the game mode(Public/Private) and give me only one word for everyone to guess.", msg.player)
+                    ctx.msg("Not enough arguments. Please choose the game mode(Public/Private) and give me some word(s) for everyone to guess.", msg.player)
                     return
-                if not args[1].isalpha():
-                    ctx.msg("The word you have told me contains characters other than letters. Please only use letters.", msg.player)
-                    return
+                badwords = 0
+                for arg in args[1:]:
+                    if not arg.isalpha():
+                        ctx.msg("The word you have told me contains characters other than letters. Please only use letters.", msg.player)
+                        return
+                    if not self.checkWord(ctx.config["hangman"]["api-key"], arg):
+                        badwords += 1
 
                 if not self.word:
-                    self.word = args[1]
-                    # Make sure settings are back to beginning
+                    self.word = " ".join(args[1:])
                     self.guessedLetters = []
                     self.misses = 0
+                    # Make sure settings are back to beginning
                     ctx.msg("{:s} has given me a word. Try guessing some letters! (!guess <letter>)".format(msg.player))
+
+                    if badwords == 1:
+                        ctx.msg("There was 1 'word' that was not found in Wordnik!")
+                    else:
+                        if badwords > 1:
+                            ctx.msg("There were {:d} 'words' that were not found in Wordnik!").format(badwords)
                 else:
                     ctx.msg("A game of hangman is already in progress, use `!guess <letter>` to guess.", msg.player)
             else:
@@ -129,7 +136,6 @@ class HangmanPlugin(PlushiePlugin):
     @plushieCmd("word", "getword")
     def printWord(self, ctx, msg):
         try:
-            print(ctx.config["hangman"]["api-key"])
             word = HangmanPlugin.getWord(ctx.config["hangman"]["api-key"])
         except:
             word = "No word."
@@ -146,7 +152,7 @@ class HangmanPlugin(PlushiePlugin):
     def wordDisplay(self):
         res = ""
         for l in self.word:
-            if l.lower() in self.guessedLetters:
+            if l.lower() in self.guessedLetters or l == " ":
                res += l
             else:
                 res += "-"
@@ -154,6 +160,8 @@ class HangmanPlugin(PlushiePlugin):
 
     def wordComplete(self):
         for l in self.word:
+            if l == " ":
+                continue
             if not l.lower() in self.guessedLetters:
                 return False
         return True
@@ -172,7 +180,24 @@ class HangmanPlugin(PlushiePlugin):
             "maxLength": maxLength,
             "api_key": api_key
         })
-        res = urllib.request.urlopen(siteURL + "?{:s}".format(paramaters))
+        res = urllib.request.urlopen("{:s}?{:s}".format(siteURL, paramaters))
         jobj = res.read().decode('utf-8')
         jparse = json.loads(jobj)
         return jparse['word']
+
+    @staticmethod
+    def checkWord(api_key, word, minCorpus=5, maxCorpus=-1, minLength=1, maxLength=-1):
+        siteURL = "http://api.wordnik.com/v4/words.json/search"
+        paramaters = urllib.parse.urlencode({
+            "minCorpusCount": minCorpus,
+            "maxCorpusCount": maxCorpus,
+            "minDictionaryCount": 0,
+            "maxDictionaryCount": -1,
+            "minLength": minLength,
+            "maxLength": maxLength,
+            "api_key": api_key
+        })
+        res = urllib.request.urlopen("{:s}/{:s}?{:s}".format(siteURL, word, paramaters))
+        jobj = res.read().decode('utf-8')
+        jparse = json.loads(jobj)
+        return not jparse['totalResults'] == 0
