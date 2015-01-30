@@ -54,8 +54,8 @@ class PluginManager:
     def signalCommand(self, message):
         if message.isCommand():
             args = message.msgArg()
-            cmd = args[0][1:]
-            if cmd.lower() in self.commands:
+            cmd = args[0][1:].lower()
+            if cmd in self.commands:
                 try:
                     self.commands[cmd](self.ctx, message)
                 except:
