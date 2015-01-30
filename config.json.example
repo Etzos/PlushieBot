@@ -1,0 +1,21 @@
+{
+    "username": "TestPlushie",
+    "password": "TestPassword",
+    "plugins":
+    {
+        "hangman":
+        {
+            "api-key": "You will need your own key"
+        },
+        "grab":
+        {
+            "from-address": "address of server to send messages from (must be gmail currently)",
+            "username": "Username for above",
+            "password": "Password for above",
+            "emails":
+            {
+                "garth": "supercodingmonkey@gmail.com"
+            }
+        }
+    }
+}
