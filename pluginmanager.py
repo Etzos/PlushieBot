@@ -55,7 +55,7 @@ class PluginManager:
         if message.isCommand():
             args = message.msgArg()
             cmd = args[0][1:]
-            if cmd in self.commands:
+            if cmd.lower() in self.commands:
                 try:
                     self.commands[cmd](self.ctx, message)
                 except:
