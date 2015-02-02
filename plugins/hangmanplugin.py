@@ -45,7 +45,7 @@ class HangmanPlugin(PlushiePlugin):
                     self.guessedLetters = []
                     self.misses = 0
                     # Make sure settings are back to beginning
-                    ctx.msg("{:s} has given me a word. Try guessing some letters! (!guess <letter>)".format(msg.player))
+                    ctx.msg("{:s} has given me a {:s}. Try guessing some letters! (!guess <letter>)".format(msg.player, "word" if len(args) > 2 else "phrase"))
 
                     if badwords == 1:
                         ctx.msg("There was 1 'word' that was not found in Wordnik!")
