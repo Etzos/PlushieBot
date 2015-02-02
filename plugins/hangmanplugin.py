@@ -196,7 +196,7 @@ class HangmanPlugin(PlushiePlugin):
             "minLength": minLength,
             "maxLength": maxLength,
             "api_key": api_key,
-            "caseSensitive": false
+            "caseSensitive": False
         })
         res = urllib.request.urlopen("{:s}/{:s}?{:s}".format(siteURL, word, paramaters))
         jobj = res.read().decode('utf-8')
