@@ -45,13 +45,13 @@ class HangmanPlugin(PlushiePlugin):
                     self.guessedLetters = []
                     self.misses = 0
                     # Make sure settings are back to beginning
-                    ctx.msg("{:s} has given me a word. Try guessing some letters! (!guess <letter>)".format(msg.player))
+                    ctx.msg("{:s} has given me a {:s}. Try guessing some letters! (!guess <letter>)".format(msg.player, "word" if len(args) <= 2 else "phrase"))
 
                     if badwords == 1:
                         ctx.msg("There was 1 'word' that was not found in Wordnik!")
                     else:
                         if badwords > 1:
-                            ctx.msg("There were {:d} 'words' that were not found in Wordnik!").format(badwords)
+                            ctx.msg("There were {:d} 'words' that were not found in Wordnik!".format(badwords))
                 else:
                     ctx.msg("A game of hangman is already in progress, use `!guess <letter>` to guess.", msg.player)
             else:
@@ -195,7 +195,8 @@ class HangmanPlugin(PlushiePlugin):
             "maxDictionaryCount": -1,
             "minLength": minLength,
             "maxLength": maxLength,
-            "api_key": api_key
+            "api_key": api_key,
+            "caseSensitive": False
         })
         res = urllib.request.urlopen("{:s}/{:s}?{:s}".format(siteURL, word, paramaters))
         jobj = res.read().decode('utf-8')
