@@ -5,8 +5,8 @@ import sqlite3
 from threading import Thread
 import urllib.error
 
-#from loop.lib import Profile, ChatLib, ChatOnline
-from lib import Profile, ChatLib, ChatOnline
+from loop.lib import Profile, ChatLib, ChatOnline
+#from lib import Profile, ChatLib, ChatOnline
 from message import Message
 from pluginmanager import PluginManager
 
