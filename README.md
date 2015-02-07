@@ -8,6 +8,8 @@ installed on your computer. In order to use this server you must:
 
 * Copy the config.json.example file to config.json and edit the contained values
 * Plushie is set to use the Loopback server by default
+* Comment out `from lib import Profile, ChatLib, ChatOnline` and uncomment
+  `from loop.lib import Profile, ChatLib, ChatOnline`
 * For Windows only: In plushieprocess.py change `from multiprocessing import Process, Pipe` to `from multiprocessing.dummy import Process, Pipe`
 * Run the plushieprocess.py file (`python plushieprocess.py` from a command line in that directory)
 * Navigate to the `loop/` directory and run the testconsole.py file (same way as the above)
