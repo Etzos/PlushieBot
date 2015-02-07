@@ -2,6 +2,7 @@
 
 from time import strftime
 
+
 def construct_message(sender, message, whisper=False, time="00:00"):
     """
     External API-like method for simulating sending a message
@@ -14,26 +15,42 @@ def construct_message(sender, message, whisper=False, time="00:00"):
     return constructed_message
 
 def full_message(sender, message, whisper=False):
+    """
+    Another external API, useful for easily creating a message
+    """
     time = strftime("%H:%M")
     return construct_message(sender, message, whisper, time)
 
 def read_log(logfile, destructive=False):
+    """
+    Reads a log file
+
+    This is an external API
+    """
     messages = []
-    with open(logfile, "r+") as f:
+    with open(logfile, "a+") as f:
+        f.seek(0)
         for line in f:
             stripped = line.rstrip('\n')
             if stripped == "":
                 continue
+            print(line)
             messages.append(line)
     if destructive:
         open(logfile, "w").close()
     return messages
 
-def write_log(backlog):
-    with open("test_input.log", "a") as f:
+def write_log(logfile, backlog):
+    """
+    Writest to a log file
+
+    This is an external API
+    """
+    with open(logfile, "a+") as f:
         for line in backlog:
             f.write("{:s}\n".format(line))
 
+## Everything below is no longer used externally
 def get_username(player_namer):
     t = input("(Player Name)> ")
     if t != "":
@@ -74,7 +91,7 @@ def main_prompt():
         elif line == "whisper":
             backlog = get_msgs(backlog, time, player_name, True)
         elif line == "flush":
-            write_log(backlog)
+            write_log("input.log", backlog)
             del backlog[:]
         elif line == "exit":
             break
