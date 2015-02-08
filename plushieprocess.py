@@ -5,8 +5,8 @@ import sqlite3
 from threading import Thread
 import urllib.error
 
-from loop.lib import Profile, ChatLib, ChatOnline
-#from lib import Profile, ChatLib, ChatOnline
+#from loop.lib import Profile, ChatLib, ChatOnline
+from lib import Profile, ChatLib, ChatOnline
 from message import Message
 from pluginmanager import PluginManager
 
@@ -29,7 +29,6 @@ def botRunner(p):
     pluginList = [
             "celebrateplugin.CelebratePlugin",
             "choiceplugin.ChoicePlugin",
-            "googleplugin.GooglePlugin",
             "grabplugin.GrabPlugin",
             "greetplugin.GreetPlugin",
             "hangmanplugin.HangmanPlugin",
@@ -45,6 +44,7 @@ def botRunner(p):
             "pingplugin.PingPlugin",
             "rpsplugin.RPSPlugin",
             "sayplugin.SayPlugin",
+            "searchplugin.SearchPlugin",
             "smileystats.SmileyStatsPlugin",
             "stabplugin.StabPlugin",
             "statplugin.StatPlugin",
@@ -52,7 +52,6 @@ def botRunner(p):
             "timeplugin.TimePlugin",
             "tmpplugin.TmpPlugin",
             "werewolfplugin.WerewolfPlugin",
-            "wikiplugin.WikiPlugin"
         ]
     pm = PluginManager(c, config)
     pm.registerPluginsFromList(pluginList)
