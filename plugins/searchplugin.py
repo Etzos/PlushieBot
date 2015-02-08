@@ -20,24 +20,24 @@ class SearchPlugin(PlushiePlugin):
     def wikiCmd(self, ctx, msg):
         result = self.getSummary(msg.noCmdMsg(), self.BASE_URLS["wikipedia"][0])
         if not result[0]:
-            ctx.msg("Error: %s" % (result[1],), msg.replyTo)
+            ctx.msg("Error: {:s}".format(result[1]), msg.replyTo)
         else:
-            ctx.msg("Wikipedia entry for '%s': %s %s" % (
+            ctx.msg("Wikipedia entry for '{:s}': {:s} {:s}".format(
                 msg.noCmdMsg(),
                 result[1],
-                "%s%s" % (self.BASE_URLS['wikipedia'][1], result[2].replace(" ", "_"),)
+                "{:s}{:s}".format(self.BASE_URLS['wikipedia'][1], result[2].replace(" ", "_"))
                 ), msg.replyTo)
 
     @plushieCmd("simplewiki", "sw")
     def neabWikiCmd(self, ctx, msg):
         result = self.getSummary(msg.noCmdMsg(), self.BASE_URLS["simple"][0])
         if not result[0]:
-            ctx.msg("Error: %s" % (result[1],), msg.replyTo)
+            ctx.msg("Error: {:s}".format(result[1]), msg.replyTo)
         else:
-            ctx.msg("Simple English Wiki entry for '%s': %s %s" % (
+            ctx.msg("Simple English Wiki entry for '{:s}': {:s} {:s}".format(
                 msg.noCmdMsg(),
                 result[1],
-                "%s%s" % (self.BASE_URLS['simple'][1], result[2].replace(" ", "_"),)
+                "{:s}{:s}".format(self.BASE_URLS['simple'][1], result[2].replace(" ", "_"))
                 ), msg.replyTo)
 
     def getSummary(self, title, api):
@@ -60,7 +60,7 @@ class SearchPlugin(PlushiePlugin):
         }
         # /w/api.php?generator=search&gsrsearch=Python%20(language)&gsrnamespace=0&gsrwhat=nearmatch&gsrredirects=&gsrlimit=1
         try:
-            request = urllib.request.Request("%s?%s" % (api, urllib.parse.urlencode(params),))
+            request = urllib.request.Request("{:s}?{:s}".format(api, urllib.parse.urlencode(params)))
             request.add_header("User-Agent", "PlushieBot Wikipedia Plugin/0.1 (supercodingmonkey@gmail.com)")
             result = urllib.request.urlopen(request)
         except:

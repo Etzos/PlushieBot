@@ -8,4 +8,4 @@ class ListPlugin(PlushiePlugin):
     @plushieCmd("list")
     def listCommands(self, ctx, msg):
         cmds = ctx.parent.commands
-        ctx.msg("Available commands (%d): !%s" % (len(cmds), ", !".join(cmds.keys()),), msg.replyTo)
+        ctx.msg("Available commands ({:d}): !{:s}".format(len(cmds), ", !".join(cmds.keys())), msg.replyTo)
