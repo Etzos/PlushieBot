@@ -240,7 +240,7 @@ class MathPlugin(PlushiePlugin):
             ('LPAREN', r'\('),
             ('RPAREN', r'\)')
         ]
-        token_reg = '|'.join('(?P<{:s}>{:s})'.format(pair for pair in tokens)
+        token_reg = '|'.join('(?P<%s>%s)' % pair for pair in tokens)
         get_tokens = re.compile(token_reg).match
         pos = 0
         mo = get_tokens(string)

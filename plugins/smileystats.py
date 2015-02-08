@@ -50,9 +50,9 @@ class SmileyStatsPlugin(PlushiePlugin):
         smileyID = self.getSmileyId(smiley)
         
         if not smileyID:
-            ctx.msg("%s is not a known smiley." % (smiley,), msg.replyTo)
+            ctx.msg("{:s} is not a known smiley.".format(smiley), msg.replyTo)
             return
-        #print("Get: %d" % (smileyID,))
+        #print("Get: {:d}".format(smileyID))
         query = self.db.execute("SELECT count FROM SmileyCount WHERE speaker = ? AND smiley = ?", (speaker.lower(), smileyID))
         res = query.fetchone()
         if not res:
@@ -60,7 +60,7 @@ class SmileyStatsPlugin(PlushiePlugin):
         else:
             amt = res[0]
 
-        ctx.msg("I have seen %s use the %s smiley %d times." % (speaker, smiley, amt), msg.replyTo)
+        ctx.msg("I have seen {:s} use the {:s} smiley {:d} times.".format(speaker, smiley, amt), msg.replyTo)
 
     @plushieMsg()
     def storeData(self, ctx, msg):
@@ -77,7 +77,7 @@ class SmileyStatsPlugin(PlushiePlugin):
             smileyID = self.getSmileyId(smiley, True)
             if not smileyID:
                 return
-            #print("Set: %d" % (smileyID,))
+            #print("Set: {:d}".format(smileyID))
             # Force the (player, smiley) tuple to exist
             self.db.execute("INSERT INTO SmileyCount (speaker, smiley) VALUES (?, ?)", (playerNorm, smileyID))
             # Update existing value
@@ -88,7 +88,7 @@ class SmileyStatsPlugin(PlushiePlugin):
         query = self.db.execute("SELECT id FROM Smilies WHERE smiley = ?", (smiley,))
         res = query.fetchone()
         if res is None:
-            print("Unknown smiley '%s'" % smiley)
+            print("Unknown smiley '{:s}'".format(smiley))
             # TODO: Insert new smiley into Smilies and return new ID (if insertNew == True)
             return None
         return res[0]

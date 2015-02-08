@@ -17,7 +17,6 @@ class SysPlugin(PlushiePlugin):
         
         argone = args[0].lower()
         if argone == "bat" or argone == "battery":
-        if argone == "bat" or argone == "battery":
             stat = battery_stats()
             level = float(stat['POWER_SUPPLY_CHARGE_NOW'])/float(stat['POWER_SUPPLY_CHARGE_FULL'])
             plug = "Discharging" if stat['POWER_SUPPLY_STATUS'] == "Discharging" else "Plugged in"
