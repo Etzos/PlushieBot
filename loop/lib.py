@@ -5,6 +5,7 @@ A library designed to simulate the NEaB chat lib (while providing debugging tool
 """
 
 from time import strftime
+from .writer import read_log, write_log, full_message
 
 class Profile:
 
@@ -34,44 +35,15 @@ class ChatLib:
     # The messaging functions provide no HTML because it's not needed
     # TODO: At least fake the links and the smilies? (Not that it should matter to Plushie)
     def sendMessage(self, message, to='*'):
-        constructed_message = "{:s} {:s}> {:s}".format(
-            strftime("%H:%M"),
-            self.profile.username if to == '*' else "to {:s}".format(to),
-            message
-        )
-        self._self_messages.append(constructed_message)
-
-    def send_outside_message(self, sender, message, whisper=False):
-        """
-        External API-like method for simulating sending a message
-        """
-        constructed_message = "00:00 {:s}> {:s}".format(
-            "{:s}{:s}".format("from " if whisper else "", sender),
-            message
-        )
-        self._self_messages.append(constructed_message)
-
-    def send_outside_raw(self, text):
-        """
-        External API-like method for simulating sending a raw message (can be used to manually send actions)
-        """
-        self._self_messages.append(text)
+        msg = full_message(self.profile.username if to == '*' else "to {:s}".format(to),
+                           message)
+        self._self_messages.append(msg)
 
     def _read_external(self):
-        filename = "loop/test_input.log"
-        with open(filename, "r+") as f:
-            for line in f:
-                stripped = line.rstrip('\n')
-                if stripped == "":
-                    continue
-                self._self_messages.append(stripped)
-        # Clear file
-        open(filename, "w").close()
+        self._self_messages.extend(read_log("loop/input.log", True))
 
     def _write_log(self):
-        with open("loop/output.log", "a") as f:
-            output = "\n".join(self._self_messages) + "\n"
-            f.write(output)
+        write_log("loop/output.log", self._self_messages)
 
     def getRawMessages(self):
         # Make sure to read for new lines

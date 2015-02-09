@@ -5,10 +5,10 @@ import urllib.request
 import json
 import re
 
-class WikiPlugin(PlushiePlugin):
-    name = "Wikipedia Access Plugin"
-    description = "Access and summarize English Wikipedia articles"
-    authors = ["Garth"]
+class SearchPlugin(PlushiePlugin):
+    name = "Wikipedia Access and Google Plugins"
+    description = "Access and summarize English Wikipedia articles and have Plushie search Google for you"
+    authors = ["Garth", "Kitsune30"]
     
     BASE_URLS = {
         # API, Wiki page
@@ -20,24 +20,24 @@ class WikiPlugin(PlushiePlugin):
     def wikiCmd(self, ctx, msg):
         result = self.getSummary(msg.noCmdMsg(), self.BASE_URLS["wikipedia"][0])
         if not result[0]:
-            ctx.msg("Error: %s" % (result[1],), msg.replyTo)
+            ctx.msg("Error: {:s}".format(result[1]), msg.replyTo)
         else:
-            ctx.msg("Wikipedia entry for '%s': %s %s" % (
+            ctx.msg("Wikipedia entry for '{:s}': {:s} {:s}".format(
                 msg.noCmdMsg(),
                 result[1],
-                "%s%s" % (self.BASE_URLS['wikipedia'][1], result[2].replace(" ", "_"),)
+                "{:s}{:s}".format(self.BASE_URLS['wikipedia'][1], result[2].replace(" ", "_"))
                 ), msg.replyTo)
 
     @plushieCmd("simplewiki", "sw")
     def neabWikiCmd(self, ctx, msg):
         result = self.getSummary(msg.noCmdMsg(), self.BASE_URLS["simple"][0])
         if not result[0]:
-            ctx.msg("Error: %s" % (result[1],), msg.replyTo)
+            ctx.msg("Error: {:s}".format(result[1]), msg.replyTo)
         else:
-            ctx.msg("Simple English Wiki entry for '%s': %s %s" % (
+            ctx.msg("Simple English Wiki entry for '{:s}': {:s} {:s}".format(
                 msg.noCmdMsg(),
                 result[1],
-                "%s%s" % (self.BASE_URLS['simple'][1], result[2].replace(" ", "_"),)
+                "{:s}{:s}".format(self.BASE_URLS['simple'][1], result[2].replace(" ", "_"))
                 ), msg.replyTo)
 
     def getSummary(self, title, api):
@@ -60,7 +60,7 @@ class WikiPlugin(PlushiePlugin):
         }
         # /w/api.php?generator=search&gsrsearch=Python%20(language)&gsrnamespace=0&gsrwhat=nearmatch&gsrredirects=&gsrlimit=1
         try:
-            request = urllib.request.Request("%s?%s" % (api, urllib.parse.urlencode(params),))
+            request = urllib.request.Request("{:s}?{:s}".format(api, urllib.parse.urlencode(params)))
             request.add_header("User-Agent", "PlushieBot Wikipedia Plugin/0.1 (supercodingmonkey@gmail.com)")
             result = urllib.request.urlopen(request)
         except:
@@ -87,3 +87,18 @@ class WikiPlugin(PlushiePlugin):
                 bodypart = bodypart.replace("\n", " ")
                 return (True, bodypart, v["title"])
         return (False, "No results found.")
+
+
+    @plushieCmd("google")
+    def googleStuff(self, ctx, msg):
+        args = msg.getArgs()
+
+        if len(args) < 1:
+            ctx.msg("I can't google nothing.", msg.replyTo)
+            return
+
+        if len(args) > 0:
+            url = urllib.parse.quote_plus(msg.noCmdMsg())
+            ctx.msg("Here you go: https://www.google.com/#q={:s}".format(url), msg.replyTo)
+        else:
+            ctx.msg("Something has failed. Please contact Garth about it.", msg.replyTo)

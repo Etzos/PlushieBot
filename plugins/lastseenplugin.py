@@ -18,7 +18,7 @@ class LastSeenPlugin(PlushiePlugin):
         argsLen = len(args)
 
         if argsLen < 1:
-            ctx.msg("I do not know who you are talking about %s." % (msg.player,), msg.replyTo)
+            ctx.msg("I do not know who you are talking about {:s}.".format(msg.player), msg.replyTo)
             return
 
         target = args[0].lower()
@@ -47,7 +47,7 @@ class LastSeenPlugin(PlushiePlugin):
 
         said = self.getLastMessage(target, howMany)
         if not said:
-            ctx.msg("I haven't seen %s say anything%s." % (args[0], "" if howMany < 2 else " that far back"), msg.replyTo)
+            ctx.msg("I haven't seen {:s} say anything{:s}.".format(args[0], "" if howMany < 2 else " that far back"), msg.replyTo)
             return
 
         saiddate = said[4]
@@ -59,7 +59,7 @@ class LastSeenPlugin(PlushiePlugin):
             dtformat = "%m-%d " + dtformat
 
         time = said[4].strftime(dtformat)
-        ctx.msg("[%s] %s> %s" % (time, said[1], said[3],), msg.replyTo)
+        ctx.msg("[{:s}] {:s}> {:s}".format(time, said[1], said[3]), msg.replyTo)
 
     def getLastMessage(self, player, howMany=1):
         # Make this select the right one

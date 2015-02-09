@@ -47,7 +47,7 @@ class PluginManager:
     def registerPluginFromString(self, pluginName, baseModule="plugins"):
         # TODO: Check to make sure that there is a "." in the string
         path, className = pluginName.rsplit(".", 1)
-        mod = import_module("%s.%s" % (baseModule, path))
+        mod = import_module("{:s}.{:s}".format(baseModule, path))
         cls = getattr(mod, className)
         self.registerPlugin(cls())
 
@@ -60,7 +60,7 @@ class PluginManager:
                     self.commands[cmd](self.ctx, message)
                 except:
                     # TODO: Get plugin from command name
-                    print("[%s] Error:\n %s" % ("Unknown Plugin", traceback.format_exc()))
+                    print("[{:s}] Error:\n{:s}".format("Unknown Plugin", traceback.format_exc()))
                     # TODO: Disable plugin
 
     def signalTick(self):
@@ -69,7 +69,7 @@ class PluginManager:
                 cmd(self.ctx)
             except:
                 # TODO: Same stuff as in signalMessage()
-                print("[%s] Error:\n %s" % ("Unknown Plugin", traceback.format_exc()))
+                print("[{:s}] Error:\n{:s}".format("Unknown Plugin", traceback.format_exc()))
 
     def signalMessage(self, message):
         # Handle messages before passing to command handling
@@ -78,7 +78,7 @@ class PluginManager:
                 handler(self.ctx, message)
             except:
                 # TODO: See previous methods
-                print("[%s] Error:\n%s" % ("Unknown Plugin", traceback.format_exc()))
+                print("[{:s}] Error:\n{:s}".format("Unknown Plugin", traceback.format_exc()))
 
         if message.isCommand():
             self.signalCommand(message)

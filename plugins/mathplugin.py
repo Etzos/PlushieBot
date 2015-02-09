@@ -88,7 +88,7 @@ class MathPlugin(PlushiePlugin):
         try:
             rpn = self.shunt(args)
             res = self.evalRPN(rpn)
-            reply = "Answer is: %g" % (res,)
+            reply = "Answer is: {:g}".format(res)
         except RuntimeError as e:
             reply = e.args[0]
         except OverflowError: # This only happens with the fib() function
@@ -169,7 +169,7 @@ class MathPlugin(PlushiePlugin):
                 # Handle operator precidence
                 elif token.type == "OP":
                     if not token.value in symbols or symbols[token.value].type != "op":
-                        raise RuntimeError("Undefined operator %s!" % (token.value,))
+                        raise RuntimeError("Undefined operator {:s}!".format(token.value))
                     # Check to see if the negative is unary, if it is set it as _
                     # Binary can have no op or left paren to its left, so check for that
                     if (token.value == "-" or token.value == "+") and (not previousToken or (previousToken.type == "OP" or previousToken.type == "LPAREN")):
@@ -254,7 +254,7 @@ class MathPlugin(PlushiePlugin):
             pos = mo.end()
             mo = get_tokens(string, pos)
         if pos != len(string):
-            raise RuntimeError("Unexpected character '%s'."%(string[pos],))
+            raise RuntimeError("Unexpected character '{:s}'.".format(string[pos]))
 
     def evalRPN(self, rpn):
         stack = []
@@ -269,7 +269,7 @@ class MathPlugin(PlushiePlugin):
                         for i in range(funcType.args):
                             argStack.append(stack.pop())
                     except IndexError:
-                        raise RuntimeError("Incorrect number of arguments for operator or function: %s" % (token,))
+                        raise RuntimeError("Incorrect number of arguments for operator or function: {:s}".format(token))
                     # Do the calculation
                     try:
                         result = funcType.operation(*reversed(argStack))
@@ -281,7 +281,7 @@ class MathPlugin(PlushiePlugin):
                         raise RuntimeError("Resulting value is no longer calculable by PlushieBot (either imaginary, undefined, or an edge case).")
                     stack.append(result)
                 else:
-                    raise RuntimeError("Unknown function or operator %s" % (token,))
+                    raise RuntimeError("Unknown function or operator {:s}".format(token))
             else:
                 # Numbers are already either an int or float type
                 stack.append(token)

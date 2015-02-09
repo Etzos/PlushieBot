@@ -38,6 +38,28 @@ class SmileyStatsPlugin(PlushiePlugin):
         num = len(bodyParts)
         player = msg.player
 
+        if num == 1 and bodyParts[0].lower() == "all":
+            speaker = player
+            query = self.db.execute("SELECT SUM(count) FROM SmileyCount WHERE speaker = ?", (speaker.lower(),))
+            res = query.fetchone()
+            if not res:
+                amt = 0
+            else:
+                amt = res[0]
+            
+            ctx.msg("{:s} has used a total of {:d} smileys.".format(speaker, amt), msg.replyTo)
+            return
+        if num == 2 and bodyParts[0].lower() == "all" and bodyParts[1].lower() == "everyone":
+            query = self.db.execute("SELECT SUM(count) FROM SmileyCount")
+            res = query.fetchone()
+            if not res:
+                amt = 0
+            else:
+                amt = res[0]
+            
+            ctx.msg("I have seen a total of {:d} smileys used in chat.".format(amt), msg.replyTo)
+            return
+            
         if num < 1:
             speaker = player
             smiley = ":)"
@@ -50,9 +72,19 @@ class SmileyStatsPlugin(PlushiePlugin):
         smileyID = self.getSmileyId(smiley)
         
         if not smileyID:
-            ctx.msg("%s is not a known smiley." % (smiley,), msg.replyTo)
+            ctx.msg("{:s} is not a known smiley.".format(smiley), msg.replyTo)
             return
-        #print("Get: %d" % (smileyID,))
+        if bodyParts[1].lower() == "everyone":
+            query = self.db.execute("SELECT SUM(count) FROM SmileyCount WHERE smiley = ?", (smileyID,))
+            res = query.fetchone()
+            if not res:
+                amt = 0
+            else:
+                amt = res[0]
+            
+            ctx.msg("I have seen everyone use {:s} smiley {:d} times.".format(smiley, amt), msg.replyTo)
+            return
+        #print("Get: {:d}".format(smileyID))
         query = self.db.execute("SELECT count FROM SmileyCount WHERE speaker = ? AND smiley = ?", (speaker.lower(), smileyID))
         res = query.fetchone()
         if not res:
@@ -60,7 +92,7 @@ class SmileyStatsPlugin(PlushiePlugin):
         else:
             amt = res[0]
 
-        ctx.msg("I have seen %s use the %s smiley %d times." % (speaker, smiley, amt), msg.replyTo)
+        ctx.msg("I have seen {:s} use the {:s} smiley {:d} times.".format(speaker, smiley, amt), msg.replyTo)
 
     @plushieMsg()
     def storeData(self, ctx, msg):
@@ -77,7 +109,7 @@ class SmileyStatsPlugin(PlushiePlugin):
             smileyID = self.getSmileyId(smiley, True)
             if not smileyID:
                 return
-            #print("Set: %d" % (smileyID,))
+            #print("Set: {:d}".format(smileyID))
             # Force the (player, smiley) tuple to exist
             self.db.execute("INSERT INTO SmileyCount (speaker, smiley) VALUES (?, ?)", (playerNorm, smileyID))
             # Update existing value
@@ -88,7 +120,7 @@ class SmileyStatsPlugin(PlushiePlugin):
         query = self.db.execute("SELECT id FROM Smilies WHERE smiley = ?", (smiley,))
         res = query.fetchone()
         if res is None:
-            print("Unknown smiley '%s'" % smiley)
+            print("Unknown smiley '{:s}'".format(smiley))
             # TODO: Insert new smiley into Smilies and return new ID (if insertNew == True)
             return None
         return res[0]

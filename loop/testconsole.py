@@ -67,7 +67,7 @@ class Application(tk.Frame):
         if not name:
             name = "Guest"
         msg = full_message(name, text, False)
-        write_log([msg])
+        write_log("input.log", [msg])
         self.entry.delete(0, tk.END)
 
     def _get_log(self):
