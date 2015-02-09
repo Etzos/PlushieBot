@@ -35,7 +35,7 @@ class StatPlugin(PlushiePlugin):
             mostStat = ", ".join("{:s} [{:d}]".format(a[0], a[1]) for a in lines)
             ctx.msg("The players who speak the most are: {:s}".format(mostStat), msg.replyTo)
         elif args[0].lower() == "totallines":
-            query = self.db.execute("SELECT lines FROM speakers")
+            query = self.db.execute("SELECT SUM(lines) FROM speakers")
             res = query.fetchone()
             if not res:
                 amt = 0
