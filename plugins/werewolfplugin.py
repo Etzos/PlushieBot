@@ -60,8 +60,7 @@ class WerewolfPlugin(PlushiePlugin):
             return
 
         if any(p for p in self.players if p.name == msg.player):
-            ctx.msg("%s: You cannot join a game you are already in. (%s until game start)" %
-                        (msg.player, self.timeRemainMessage(),))
+            ctx.msg("{:s}: You cannot join a game you are already in. ({:s} until game start)".format(msg.player, self.timeRemainMessage()))
             return
 
         # Waiting for quorum
@@ -71,7 +70,7 @@ class WerewolfPlugin(PlushiePlugin):
             self.players.append(self.Player(msg.player))
             ctx.msg("""A new game of werewolf is about to start!
                         Type !start to join.
-                        (%s until start)""" % (self.timeRemainMessage(),))
+                        ({:s} until start)""".format(self.timeRemainMessage()))
             ctx.msg(self.quorumMessage())
             ctx.msg("For the instructions/rules use !gamerules", msg.player)
         elif self.gamestarted and self.turn < 1: # Still in joining phase
@@ -79,9 +78,9 @@ class WerewolfPlugin(PlushiePlugin):
             self.players.append(self.Player(msg.player))
             ctx.msg("""You have joined the current game of werewolf!
                         Please await further instructions.
-                        (%s until start)""" %
-                        (self.timeRemainMessage(),), msg.player)
-            ctx.msg("%s (%s to join)" % (self.quorumMessage(), leftTime))
+                        ({:s} until start)""".format(
+                        self.timeRemainMessage()), msg.player)
+            ctx.msg("{:s} ({:s} to join)".format(self.quorumMessage(), leftTime))
             ctx.msg("For the full game instructions/rules use !gamerules", msg.player)
         else:
             ctx.msg("A game of werewolf is already in progress. Please wait for the next game to join")
@@ -120,7 +119,7 @@ class WerewolfPlugin(PlushiePlugin):
 
         targetLst = [p for p in self.players if p.name.lower() == args[0].lower()]
         if not targetLst:
-            ctx.msg("The given player, %s, is not playing and cannot be voted for." % (args[0],), msg.player)
+            ctx.msg("The given player, {:s}, is not playing and cannot be voted for.".format(args[0]), msg.player)
             return
         target = targetLst[0]
 
@@ -129,7 +128,7 @@ class WerewolfPlugin(PlushiePlugin):
             return
 
         playerObj.vote(args[0], self.turn)
-        ctx.msg("You have voted for %s as a %s." % (args[0], playerObj.role), msg.player)
+        ctx.msg("You have voted for {:s} as a {:s}.".format(args[0], playerObj.role), msg.player)
 
 
     @plushieCmd("role")
@@ -161,10 +160,10 @@ class WerewolfPlugin(PlushiePlugin):
             return
 
         if self.turn < 1:
-            ctx.msg("Players waiting for game to begin: %s" % (", ".join(p.name for p in self.players),), msg.replyTo)
+            ctx.msg("Players waiting for game to begin: {:s}".format(", ".join(p.name for p in self.players)), msg.replyTo)
         else:
-            ctx.msg("Players in game: %s" % (
-                    ", ".join((p.name if p.state == "alive" else "%s [%s]" % (p.name, p.state)) for p in self.players),),
+            ctx.msg("Players in game: {:s}".format(
+                    ", ".join((p.name if p.state == "alive" else "{:s} [{:s}]".format(p.name, p.state)) for p in self.players),),
                 msg.replyTo)
 
 
@@ -176,9 +175,9 @@ class WerewolfPlugin(PlushiePlugin):
             return
 
         if self.turn < 1:
-            ctx.msg("There are %s until the game starts." % (self.timeRemainMessage(),), msg.replyTo)
+            ctx.msg("There are {:s} until the game starts.".format(self.timeRemainMessage()), msg.replyTo)
         else:
-            ctx.msg("There are %s until the next phase change. %s" % (self.timeRemainMessage(), self.phaseMessage(False),),
+            ctx.msg("There are {:s} until the next phase change. {:s}".format(self.timeRemainMessage(), self.phaseMessage(False)),
                     msg.replyTo)
 
 
@@ -217,7 +216,7 @@ class WerewolfPlugin(PlushiePlugin):
                     for p in self.players:
                         ctx.msg("You are a " + p.role + ".", p.name)
                         if p.role == "werewolf":
-                            ctx.msg("Your fellow werewolves are: %s" % (wolfstring,), p.name)
+                            ctx.msg("Your fellow werewolves are: {:s}".format(wolfstring,), p.name)
                     # Start the current phase
                     self.doPhase(ctx, isStart=True)
             else:
@@ -310,8 +309,8 @@ class WerewolfPlugin(PlushiePlugin):
                 return
             else:
                 ctx.msg("You have been eliminated from the game. Sorry.", pl[0].name)
-                ctx.msg("%s has been eliminated by the %s! %s" %
-                         (pl[0].name, "villagers" if self.isDay else "werewolves",
+                ctx.msg("{:s} has been eliminated by the {:s}! {:s}".format(
+                        pl[0].name, "villagers" if self.isDay else "werewolves",
                          " Quit: " + ", ".join(oldPlayers) if len(oldPlayers) > 0 else ""))
 
         if self.isDay:
@@ -332,31 +331,30 @@ class WerewolfPlugin(PlushiePlugin):
         if diff == 0:
             return "Quorum of " + str(num) + " players reached!"
         elif diff == self.quorum-1: # Handle the singular
-            return "There is currently 1 player. Need %d more for quorum." % (diff,)
+            return "There is currently 1 player. Need {:d} more for quorum.".format(diff)
         elif diff > 0:
-            return "There are currently  %d players. Need %d more for quorum." % (num, diff,)
+            return "There are currently {:d} players. Need {:d} more for quorum.".format(num, diff)
         else:
-            return "There are currently %d players. More than enough!" % (num,)
+            return "There are currently {:d} players. More than enough!".format(num)
 
     def phaseMessage(self, includeInst=True):
-        ret = "It is now %s of turn %d." % ("day" if self.isDay else "night", self.turn,)
+        ret = "It is now {:s} of turn {:d}.".format("day" if self.isDay else "night", self.turn)
         if includeInst:
-            ret += """ %s should cast their vote using
-                      `/msg Plushie !vote <Player Name (Case Important!)>`""" % (
-                          "Everyone" if self.isDay else "Werewolves",
-                      )
+            ret += """ {:s} should cast their vote using
+                      `/msg Plushie !vote <Player Name (Case Important!)>`""".format(
+                          "Everyone" if self.isDay else "Werewolves")
         return ret
 
     def finalStatsMessage(self):
-        return "Villagers: %s. Werewolves: %s." % (
-                ", ".join("%s [%s]" % (p.name, p.state) for p in self.players if p.role == "villager"),
-                ", ".join("%s [%s]" % (p.name, p.state) for p in self.players if p.role == "werewolf")
+        return "Villagers: {:s}. Werewolves: {:s}.".format(
+                ", ".join("{:s} [{:s}]".format(p.name, p.state) for p in self.players if p.role == "villager"),
+                ", ".join("{:s} [{:s}]".format(p.name, p.state) for p in self.players if p.role == "werewolf")
             )
 
     def timeRemainMessage(self):
         diff = datetime.now() - self.turnChange
         time = self.phaseTime if self.gameBegun() else self.startTime
-        return "%d seconds remaining" % (time - diff.total_seconds(),)
+        return "{:d} seconds remaining".format(time - diff.total_seconds())
 
     def instructionsMessage(self):
         return """You have decided to join a game of Werewolf (if not, do it now use `!start`). If you don't know how to play, the rules will be explained here.

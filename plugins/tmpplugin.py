@@ -8,7 +8,7 @@ class TmpPlugin(PlushiePlugin):
     
     @plushieCmd("crazy")
     def run(self, ctx, msg):
-        ctx.msg("Yep %s is crazy" % (msg.noCmdMsg(),), msg.replyTo)
+        ctx.msg("Yep {:s} is crazy".format(msg.noCmdMsg()), msg.replyTo)
 
 #    @plushieCmd("load")
 #    def loadPlugin(self, ctx, msg):

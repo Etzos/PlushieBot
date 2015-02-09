@@ -44,8 +44,8 @@ class KarmaPlugin(PlushiePlugin):
         name = msg.getCmd()
 
         if num < 1:
-            ctx.msg("%s: Your %s is %d." %
-                    (player,
+            ctx.msg("{:s}: Your {:s} is {:d}.".format(
+                    player,
                      name,
                      self.getKarma(player)
                     ), msg.replyTo)
@@ -63,47 +63,47 @@ class KarmaPlugin(PlushiePlugin):
                         str(r[1]) + " / -" + str(r[2]) + "], "
                 ctx.msg(postStr, msg.replyTo)
             elif bodyParts[0] == "most":
-                postStr = "The items with the most %s are: " % (name,)
+                postStr = "The items with the most {:s} are: ".format(name)
                 for r in self.most("most", 5):
                     postStr += r[0] + ": (" + str(r[3]) + ") [+" + \
                         str(r[1]) + " / -" + str(r[2]) + "], "
                 ctx.msg(postStr, msg.replyTo)
             else:
-                ctx.msg("%s: Your %s is %d." %
-                    (player,
+                ctx.msg("{:s}: Your {:s} is {:d}.".format(
+                    player,
                      name,
                      self.getKarma(player)
                     ), msg.replyTo)
         elif bodyParts[0] == "++" or bodyParts[0] == "add":
             if msg.isWhisper:
-                ctx.msg("Privately changing %s isn't allowed." % (name,), player)
+                ctx.msg("Privately changing {:s} isn't allowed.".format(name), player)
                 return
             elif player == bodyParts[1]:
-                ctx.msg("You cannot change your own %s." % (name,), player)
+                ctx.msg("You cannot change your own {:s}.".format(name), player)
                 return
             if (not self.checkTimeout(player)) or (not self.checkHistory(player)):
-                ctx.msg("You have made too many %s changes recently and " +
-                        "have been placed on timeout." % (name,), player)
+                ctx.msg("You have made too many {:s} changes recently and " +
+                        "have been placed on timeout.".format(name), player)
                 return
             self.addHistory(player, bodyParts[1], True)
             self.addKarma(bodyParts[1])
-            ctx.msg("%s's %s increased." % (bodyParts[1], name), player)
+            ctx.msg("{:s}'s {:s} increased.".format(bodyParts[1], name), player)
         elif bodyParts[0] == "--" or bodyParts[0] == "sub":
             if msg.isWhisper:
-                ctx.msg("Privately changing %s isn't allowed." % (name,), player)
+                ctx.msg("Privately changing {:s} isn't allowed.".format(name), player)
                 return
             elif player == bodyParts[1]:
-                ctx.msg("You cannot change your own %s." % (name,), player)
+                ctx.msg("You cannot change your own {:s}.".format(name), player)
                 return
             if (not self.checkTimeout(player)) or (not self.checkHistory(player)):
-                ctx.msg("You have made too many %s changes recently and " +
-                        "have been placed on timeout." % (name,), player)
+                ctx.msg("You have made too many {:s} changes recently and " +
+                        "have been placed on timeout.".format(name), player)
                 return
             self.addHistory(player, bodyParts[1], False)
             self.subKarma(bodyParts[1])
-            ctx.msg("%s's %s decreased." % (bodyParts[1], name), player)
+            ctx.msg("{:s}'s {:s} decreased.".format(bodyParts[1], name), player)
         elif bodyParts[0] == "status":
-            ctx.msg("'%s' has %d %s." % (bodyParts[1], self.getKarma(bodyParts[1]), name),
+            ctx.msg("'{:s}' has {:d} {:s}.".format(bodyParts[1], self.getKarma(bodyParts[1]), name),
                     msg.replyTo)
 
     def getKarma(self, item):
@@ -149,8 +149,8 @@ class KarmaPlugin(PlushiePlugin):
         res = self.db.execute("""SELECT item, added, subtracted,
                                         added-subtracted
                                  FROM karma
-                                 ORDER BY %s DESC
-                                 LIMIT %s""" % (orderby, limit,))
+                                 ORDER BY {:s} DESC
+                                 LIMIT {:s}""".format(orderby, limit))
         return res.fetchall()
 
     def addHistory(self, player, target, add=True):
