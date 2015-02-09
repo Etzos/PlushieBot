@@ -34,6 +34,14 @@ class StatPlugin(PlushiePlugin):
             lines = self.getTopLines()
             mostStat = ", ".join("{:s} [{:d}]".format(a[0], a[1]) for a in lines)
             ctx.msg("The players who speak the most are: {:s}".format(mostStat), msg.replyTo)
+        elif args[0].lower() == "totallines":
+            query = self.db.execute("SELECT lines FROM speakers")
+            res = query.fetchone()
+            if not res:
+                amt = 0
+            else:
+                amt = res[0]
+            ctx.msg("I have seen a total of {:d} lines said.".format(amt), msg.replyTo)
         elif args[0].lower() == "linerank":
             rankToGet = msg.player
             # If the player enters another argument, assume it's a player name
@@ -48,9 +56,9 @@ class StatPlugin(PlushiePlugin):
                 rank[0],
                 rank[1]),
             msg.replyTo)
-        elif args[0].lower() == "atlinerank":
+        elif args[0].lower() == "rank":
             if arglen < 2:
-                ctx.msg("You must supply a number to the atlinerank subcommand.", msg.replyTo)
+                ctx.msg("You must supply a number to the rank subcommand.", msg.replyTo)
                 return
             try:
                 toGet = int(args[1])
