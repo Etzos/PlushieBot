@@ -6,9 +6,9 @@ import json
 import re
 
 class SearchPlugin(PlushiePlugin):
-    name = "Wikipedia Access Plugin"
-    description = "Access and summarize English Wikipedia articles"
-    authors = ["Garth"]
+    name = "Wikipedia Access and Google Plugins"
+    description = "Access and summarize English Wikipedia articles and have Plushie search Google for you"
+    authors = ["Garth", "Kitsune30"]
     
     BASE_URLS = {
         # API, Wiki page
@@ -88,10 +88,6 @@ class SearchPlugin(PlushiePlugin):
                 return (True, bodypart, v["title"])
         return (False, "No results found.")
 
-    name = "Google Plugin"
-    description = "Have Plushie search Google for you"
-    authors = ["Kitsune30"]
-    #Shamelessly stolen code from: Garth
 
     @plushieCmd("google")
     def googleStuff(self, ctx, msg):
