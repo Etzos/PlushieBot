@@ -67,7 +67,7 @@ class SmileyStatsPlugin(PlushiePlugin):
             
             ctx.msg("{:s} has used a total of {:d} smileys.".format(speaker, amt), msg.replyTo)
             return
-            if num == 2 and smiley.lower() == "all" and speaker.lower() == "everyone":
+        if num == 2 and smiley.lower() == "all" and speaker.lower() == "everyone":
             query = self.db.execute("SELECT SUM(count) FROM SmileyCount")
             res = query.fetchone()
             if not res:
