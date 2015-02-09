@@ -38,6 +38,28 @@ class SmileyStatsPlugin(PlushiePlugin):
         num = len(bodyParts)
         player = msg.player
 
+        if num == 1 and bodyParts[0].lower() == "all":
+            speaker = player
+            query = self.db.execute("SELECT SUM(count) FROM SmileyCount WHERE speaker = ?", (speaker.lower(),))
+            res = query.fetchone()
+            if not res:
+                amt = 0
+            else:
+                amt = res[0]
+            
+            ctx.msg("{:s} has used a total of {:d} smileys.".format(speaker, amt), msg.replyTo)
+            return
+        if num == 2 and bodyParts[0].lower() == "all" and bodyParts[1].lower() == "everyone":
+            query = self.db.execute("SELECT SUM(count) FROM SmileyCount")
+            res = query.fetchone()
+            if not res:
+                amt = 0
+            else:
+                amt = res[0]
+            
+            ctx.msg("I have seen a total of {:d} smileys used in chat.".format(amt), msg.replyTo)
+            return
+            
         if num < 1:
             speaker = player
             smiley = ":)"
@@ -51,6 +73,16 @@ class SmileyStatsPlugin(PlushiePlugin):
         
         if not smileyID:
             ctx.msg("{:s} is not a known smiley.".format(smiley), msg.replyTo)
+            return
+        if bodyParts[1].lower() == "everyone":
+            query = self.db.execute("SELECT SUM(count) FROM SmileyCount WHERE smiley = ?", (smileyID,))
+            res = query.fetchone()
+            if not res:
+                amt = 0
+            else:
+                amt = res[0]
+            
+            ctx.msg("I have seen everyone use {:s} smiley {:d} times.".format(smiley, amt), msg.replyTo)
             return
         #print("Get: {:d}".format(smileyID))
         query = self.db.execute("SELECT count FROM SmileyCount WHERE speaker = ? AND smiley = ?", (speaker.lower(), smileyID))
