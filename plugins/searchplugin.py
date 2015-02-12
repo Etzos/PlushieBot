@@ -99,6 +99,6 @@ class SearchPlugin(PlushiePlugin):
 
         if len(args) > 0:
             url = urllib.parse.quote_plus(msg.noCmdMsg())
-            ctx.msg("Here you go: https://www.google.com/#q={:s}".format(url), msg.replyTo)
+            ctx.msg("Here is the search result for '{:s}': https://www.google.com/#q={:s}".format(msg.noCmdMsg(), url), msg.replyTo)
         else:
             ctx.msg("Something has failed. Please contact Garth about it.", msg.replyTo)
