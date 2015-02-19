@@ -83,7 +83,7 @@ class SmileyStatsPlugin(PlushiePlugin):
         if not smileyID:
             ctx.msg("{:s} is not a known smiley.".format(smiley), msg.replyTo)
             return
-        if bodyParts[1].lower() == "everyone":
+        if num > 1 and bodyParts[1].lower() == "everyone":
             query = self.db.execute("SELECT SUM(count) FROM SmileyCount WHERE smiley = ?", (smileyID,))
             res = query.fetchone()
             if not res:
