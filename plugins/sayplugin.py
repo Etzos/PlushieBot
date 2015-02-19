@@ -14,5 +14,5 @@ class SayPlugin(PlushiePlugin):
         elif msg.player == "WhiteKitsune":
             ctx.msg("/msg Garth WhiteKitsune is telling me to say: {:s}".format(msg.noCmdMsg()))
             ctx.msg(msg.noCmdMsg())
-        else
+        else:
             ctx.msg("/me bops {:s} on the head -- Don't pull my strings! d.b".format(msg.player))
