@@ -56,6 +56,6 @@ def commandDoc(cmd=None, alias=(), follows=None, extra=None, doc=""):
     def decorator(func):
         if not hasattr(func, '_doc'):
             func._doc = []
-        func._doc.append({cmd: cmd, alias: alias, follows: follows, extra: extra, doc: doc})
+        func._doc.append({'cmd': cmd, 'alias': alias, 'follows': follows, 'extra': extra, 'doc': doc})
         return func
     return decorator
