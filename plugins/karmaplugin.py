@@ -43,7 +43,7 @@ class KarmaPlugin(PlushiePlugin):
     @commandDoc(cmd="most", doc="View items with the most changes")
     @commandDoc(cmd="++", alias=("add",), extra="<item name>", doc="Increase the karma of <item name> by 1")
     @commandDoc(cmd="--", alias=("sub",), extra="<item name>", doc="Decrease the karma of <item name> by 1")
-    @commandDoc(cmd="status", extra="[item name]", doc="Gets either [item name]'s karma or your karma")
+    @commandDoc(cmd="status", extra="<item name>", doc="Gets either <item name>'s karma or your karma")
     def run(self, ctx, msg):
         bodyParts = msg.getArgs()
         num = len(bodyParts)

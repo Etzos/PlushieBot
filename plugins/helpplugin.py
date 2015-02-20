@@ -11,8 +11,14 @@ class HelpPlugin(PlushiePlugin):
         self.cmd = None
         self.subcmd = None
         self.follows = None
-    
+
+#For all future command documentation: Surrounding anything by 
+#<> is a necessary parameter,
+#() is an optional parameter,
+#[] is a necessary parameter from the selection given, and
+#{} is an optional parameter from the selection given.        
     @plushieCmd("help")
+    @commandDoc(extra="<command> (subcommand)", doc="Shows usage, documentation, and any subcommands of Plushie's commands.")
     def retrieveDoc(self, ctx, msg):
         args = msg.getArgs()
         numargs = len(args)
@@ -21,17 +27,17 @@ class HelpPlugin(PlushiePlugin):
             ctx.msg("Too few arguments. Please include a command and/or a subcommand.", msg.replyTo)
             return
         elif numargs == 1:
-            self.cmd = args[0]
+            self.cmd = args[0].lower()
             self.subcmd = None
             self.follows = None
         elif numargs == 2:
-            self.cmd = args[0]
+            self.cmd = args[0].lower()
             self.subcmd = args[1]
             self.follows = None
         elif numargs > 2:
-            self.cmd = args[0]
-            self.subcmd = args[-1:]
-            self.follows = args[-2:-1]
+            self.cmd = args[0].lower()
+            self.subcmd = args[-1:].lower()
+            self.follows = args[-2:-1].lower()
         
         try:
             self.documentation = [(x['doc'], x['extra']) for x in ctx.parent.commands[self.cmd]._doc 

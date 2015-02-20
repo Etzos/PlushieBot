@@ -13,6 +13,7 @@ class LastSeenPlugin(PlushiePlugin):
         self.db = sqlite3.connect("chat.db", detect_types=sqlite3.PARSE_COLNAMES)
 
     @plushieCmd("lastsaid")
+    @commandDoc(extra="<player> <number>", doc="Returns <player>'s message from <number> messages ago.")
     def run(self, ctx, msg):
         args = msg.getArgs()
         argsLen = len(args)

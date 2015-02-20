@@ -7,6 +7,7 @@ class SayPlugin(PlushiePlugin):
     authors = ["Garth"]
 
     @plushieCmd("say")
+    @commandDoc(extra="<things for Plushie to say>", doc="Has Plushie say <things for Plushie to say>.")
     def run(self, ctx, msg):
         if msg.player == "Garth":
             ctx.msg(msg.noCmdMsg())

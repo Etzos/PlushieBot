@@ -8,6 +8,7 @@ class ListenPlugin(PlushiePlugin):
     authors = ["Garth"]
 
     @plushieCmd("listen", "playing")
+    @commandDoc(doc="Currently does nothing.")
     def listen(self, ctx, msg):
         amarok = MprisPlaying()
         amarok.getData("org.mpris.MediaPlayer2.amarok",

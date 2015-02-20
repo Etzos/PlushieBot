@@ -104,6 +104,7 @@ class RPSPlugin(PlushiePlugin):
         raise RuntimeError("Unknown choice.")
 
     @plushieCmd("challenge")
+    @commandDoc(extra="[rock, paper, scissor]", doc="Plays a game of rock-paper-scissors with Plushie.")
     def challenge(self, ctx, msg):
         args = msg.getArgs()
         arglen = len(args)

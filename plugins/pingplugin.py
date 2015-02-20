@@ -9,6 +9,7 @@ class PingPlugin(PlushiePlugin):
     authors = ["Garth"]
 
     @plushieCmd("ping")
+    @commandDoc(doc="Responds to a player's ping.")
     def run(self, ctx, msg):
         rand = random.randint(1, 10)
         if msg.isWhisper or rand < 8:
