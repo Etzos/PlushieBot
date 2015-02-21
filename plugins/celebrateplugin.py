@@ -9,7 +9,7 @@ class CelebratePlugin(PlushiePlugin):
     authors = ["Garth"]
 
     @plushieCmd("celebrate")
-    @commandDoc(doc="Has Plushie celebrate.")
+    @commandDoc(doc="Has Plushie celebrate")
     def celebrate(self, ctx, msg):
         rand = random.randint(0, 3)
 

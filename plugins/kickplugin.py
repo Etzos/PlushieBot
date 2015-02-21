@@ -9,7 +9,7 @@ class KickPlugin(PlushiePlugin):
     authors = ["Garth"]
 
     @plushieCmd("kick")
-    @commandDoc(extra="<thing to kick>", doc="Has Plushie kick <things to kick>.")
+    @commandDoc(extra="<thing to kick>", doc="Has Plushie kick <things to kick>")
     def run(self, ctx, msg):
         target = msg.getArgs()
         rand = random.randint(1, 10)

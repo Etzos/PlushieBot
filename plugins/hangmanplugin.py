@@ -17,9 +17,9 @@ class HangmanPlugin(PlushiePlugin):
         self.maxMisses = 9
 
     @plushieCmd("hangman")
-    @commandDoc(doc="Starts a game of hangman.")
-    @commandDoc(cmd="public", extra="<word>", doc="Starts a game of hangman where the word is the <word> of your choice.")
-    @commandDoc(cmd="private", extra="<word>", doc="Currently does nothing.")
+    @commandDoc(doc="Starts a game of hangman")
+    @commandDoc(cmd="public", extra="<word>", doc="Starts a game of hangman where the word is the <word> of your choice")
+    @commandDoc(cmd="private", extra="<word>", doc="Currently does nothing")
     def startGame(self, ctx, msg):
         args = msg.getArgs()
 
@@ -78,7 +78,7 @@ class HangmanPlugin(PlushiePlugin):
             ctx.msg(self.displayStatus())
 
     @plushieCmd("guess")
-    @commandDoc(extra="<letter>", doc="Guesses a <letter> for the Hangman game.")
+    @commandDoc(extra="<letter>", doc="Guesses a <letter> for the Hangman game")
     def guessLetter(self, ctx, msg):
         args = msg.getArgs()
 
@@ -138,7 +138,7 @@ class HangmanPlugin(PlushiePlugin):
                 ctx.msg(self.displayStatus(), msg.replyTo)
 
     @plushieCmd("word", "getword")
-    @commandDoc(doc="Returns a word.")
+    @commandDoc(doc="Returns a word")
     def printWord(self, ctx, msg):
         try:
             word = HangmanPlugin.getWord(ctx.config["hangman"]["api-key"])

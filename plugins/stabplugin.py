@@ -6,7 +6,7 @@ class StabPlugin(PlushiePlugin):
     authors = ["Garth"]
 
     @plushieCmd("stab")
-    @commandDoc(extra="<item name>", doc="Has Plushie stab <item name>.")
+    @commandDoc(extra="<item name>", doc="Has Plushie stab <item name>")
     def run(self, ctx, msg):
         target = msg.getArgs()
 

@@ -33,7 +33,10 @@ class SmileyStatsPlugin(PlushiePlugin):
             self.db.commit()
 
     @plushieCmd("smileycount")
-    @commandDoc(extra="{(smiley) or [all]} {(Player name) or [everyone]}", doc="Has Plushie return various stats about queried smileys and/or players.")
+    @commandDoc(extra="[<smiley>|all [<player>|everyone]]", 
+                doc="Has Plushie return various stats about queried smileys and/or players. " + 
+                    "Using \"all\" returns the sum of all the smileys used. " + 
+                    "Using \"everyone\" returns the smiley query, but summing everyone together")
     def smileyCount(self, ctx, msg):
         bodyParts = msg.getArgs()
         num = len(bodyParts)

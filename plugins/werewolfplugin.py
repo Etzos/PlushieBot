@@ -50,7 +50,7 @@ class WerewolfPlugin(PlushiePlugin):
         self.startTime = 180
 
     @plushieCmd("start")
-    @commandDoc(doc="Enters you into a game of Werewolf is one has yet to be started.")
+    @commandDoc(doc="Enters you into a game of Werewolf is one has yet to be started")
     def startCmd(self, ctx, msg):
         # Public ONLY
         args = msg.getArgs()
@@ -88,7 +88,7 @@ class WerewolfPlugin(PlushiePlugin):
 
 
     @plushieCmd("vote")
-    @commandDoc(extra="<player>", doc="Votes for <player> in Werewolf game.")
+    @commandDoc(extra="<player>", doc="Votes for <player> in Werewolf game")
     def voteCmd(self, ctx, msg):
         # MUST be whisper!
         if not msg.isWhisper:
@@ -134,7 +134,7 @@ class WerewolfPlugin(PlushiePlugin):
 
 
     @plushieCmd("role")
-    @commandDoc(doc="Returns whether you are a villager or a werewolf in the Werewolf game.")
+    @commandDoc(doc="Returns whether you are a villager or a werewolf in the Werewolf game")
     def roleCmd(self, ctx, msg):
         # MUST be whisper!
         if not msg.isWhisper:
@@ -156,7 +156,7 @@ class WerewolfPlugin(PlushiePlugin):
 
 
     @plushieCmd("players")
-    @commandDoc(doc="Returns the players and whether they are alive in the Werewolf game.")
+    @commandDoc(doc="Returns the players and whether they are alive in the Werewolf game")
     def playersCmd(self, ctx, msg):
         # Whisper OR public
         if not self.gamestarted:
@@ -172,7 +172,7 @@ class WerewolfPlugin(PlushiePlugin):
 
 
     @plushieCmd("gamestat")
-    @commandDoc(doc="Returns how many seconds until the next phase of the Werewolf game.")
+    @commandDoc(doc="Returns how many seconds until the next phase of the Werewolf game")
     def gamestatCmd(self, ctx, msg):
         # Whisper OR public
         if not self.gamestarted:
@@ -187,13 +187,13 @@ class WerewolfPlugin(PlushiePlugin):
 
 
     @plushieCmd("forceturn")
-    @commandDoc(doc="Currently is just a place holder command.")
+    @commandDoc(doc="Currently is just a place holder command")
     def forceTurn(self, ctx, msg):
         ctx.msg("Blah")
 
 
     @plushieCmd("gamerules")
-    @commandDoc(doc="Returns the game rules for the Werewolf game.")
+    @commandDoc(doc="Returns the game rules for the Werewolf game")
     def gamerulesCmd(self, ctx, msg):
         ctx.msg(self.instructionsMessage(), msg.player)
 

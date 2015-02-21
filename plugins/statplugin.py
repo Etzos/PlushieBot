@@ -12,12 +12,12 @@ class StatPlugin(PlushiePlugin):
         self.db = sqlite3.connect("chat.db")
 
     @plushieCmd("stats", "stat")
-    @commandDoc(doc="Has Plushie return various stats about chat lines.")
-    @commandDoc(cmd="lines", extra="<player>", doc="Returns how many lines Plushie has seen <player> say.")
-    @commandDoc(cmd="toplines", doc="Returns the top 5 players who have spoken the most and the amount of ine they have said.")
-    @commandDoc(cmd="totallines", doc="Returns how many lines Plushie has seen in total.")
-    @commandDoc(cmd="linerank", extra="(player)", doc="Returns the rank and how many lines you or (player) has said.")
-    @commandDoc(cmd="rank", extra="<number>", doc="Returns the player and the amount of lines they have said at rank <number>.")
+    @commandDoc(doc="Has Plushie return various stats about chat lines")
+    @commandDoc(cmd="lines", extra="<player>", doc="Returns how many lines Plushie has seen <player> say")
+    @commandDoc(cmd="toplines", doc="Returns the top 5 players who have spoken the most and the amount of lines they have said")
+    @commandDoc(cmd="totallines", doc="Returns how many lines Plushie has seen in total")
+    @commandDoc(cmd="linerank", extra="[player]", doc="Returns the rank and how many lines you or (player) has said")
+    @commandDoc(cmd="rank", extra="<number>", doc="Returns the player and the amount of lines they have said at rank <number>")
     def delegate(self, ctx, msg):
         args = msg.getArgs()
         arglen = len(args)

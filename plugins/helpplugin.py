@@ -12,13 +12,12 @@ class HelpPlugin(PlushiePlugin):
         self.subcmd = None
         self.follows = None
 
-#For all future command documentation: Surrounding anything by 
-#<> is a necessary parameter,
-#() is an optional parameter,
-#[] is a necessary parameter from the selection given, and
-#{} is an optional parameter from the selection given.        
+#For all future command documentation:
+#[] = optional command
+#<> = required user input
+#| = choice between items
     @plushieCmd("help")
-    @commandDoc(extra="<command> (subcommand)", doc="Shows usage, documentation, and any subcommands of Plushie's commands.")
+    @commandDoc(extra="<command> [subcommand]", doc="Shows usage, documentation, and any subcommands of Plushie's commands")
     def retrieveDoc(self, ctx, msg):
         args = msg.getArgs()
         numargs = len(args)

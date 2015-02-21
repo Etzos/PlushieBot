@@ -1,4 +1,4 @@
-from .plugin import PlushiePlugin, plushieCmd
+from .plugin import PlushiePlugin, plushieCmd, commandDoc
 
 
 class SysPlugin(PlushiePlugin):
@@ -7,8 +7,9 @@ class SysPlugin(PlushiePlugin):
     authors = ["Garth"]
 
     @plushieCmd("sys", "system", "sysstats")
-    #@commandDoc(doc="Returns information about Plushie's server.")
-    #@commandDoc(cmd="battery", alias=("bat",), doc="Returns the percentage of Plushie's server's battery and whether it is plugged in or not.")
+    @commandDoc(doc="Returns information about Plushie's server")
+    @commandDoc(cmd="battery", alias=("bat",), 
+                doc="Returns the percentage of Plushie's server's battery and whether it is plugged in or not")
     def base_command(self, ctx, msg):
         args = msg.getArgs()
         arglen = len(args)

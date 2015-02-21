@@ -7,7 +7,7 @@ class HugPlugin(PlushiePlugin):
     authors = ["Garth"]
 
     @plushieCmd("hug")
-    @commandDoc(extra="<player>", doc="Has Plushie hug <player>.")
+    @commandDoc(extra="<player>", doc="Has Plushie hug <player>")
     def run(self, ctx, msg):
         target = msg.getArgs()
         if not target or target[0].lower() == "plushie":

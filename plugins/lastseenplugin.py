@@ -13,7 +13,9 @@ class LastSeenPlugin(PlushiePlugin):
         self.db = sqlite3.connect("chat.db", detect_types=sqlite3.PARSE_COLNAMES)
 
     @plushieCmd("lastsaid")
-    @commandDoc(extra="<player> <number>", doc="Returns <player>'s message from <number> messages ago.")
+    @commandDoc(extra="<player> [<number>]", 
+                doc="Returns <player>'s message from <number> messages ago. " +
+                "Without <number>, defaults to last message they have said")
     def run(self, ctx, msg):
         args = msg.getArgs()
         argsLen = len(args)
@@ -33,7 +35,7 @@ class LastSeenPlugin(PlushiePlugin):
             if howMany < 1:
                 ctx.msg("You have to provide a positive number.", msg.replyTo)
                 return
-            elif howMany > 10:
+            elif howMany > 30:
                 ctx.msg("I'm sorry, but I don't remember that far back.", msg.replyTo)
                 return
 

@@ -10,9 +10,9 @@ class HashPlugin(PlushiePlugin):
     authors = ["Garth"]
 
     @plushieCmd("hash")
-    @commandDoc(doc="Returns a hash.")
-    @commandDoc(cmd="md5", extra="<string to hash>", doc="Returns a md5 sum of <string to hash>.")
-    @commandDoc(cmd="sah1", extra="<string to hash>", doc="Returns a sha1 sum of <string to hash>.")
+    @commandDoc(doc="Returns a hash")
+    @commandDoc(cmd="md5", extra="<string to hash>", doc="Returns a md5 sum of <string to hash>")
+    @commandDoc(cmd="sah1", extra="<string to hash>", doc="Returns a sha1 sum of <string to hash>")
     def run(self, ctx, msg):
         args = msg.getArgs()
         argLen = len(args)

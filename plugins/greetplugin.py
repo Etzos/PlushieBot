@@ -7,7 +7,7 @@ class GreetPlugin(PlushiePlugin):
     authors = ["Garth"]
 
     @plushieCmd("greet")
-    @commandDoc(extra="<player>", doc="Has Plushie greet <player>.")
+    @commandDoc(extra="<player>", doc="Has Plushie greet <player>")
     def run(self, ctx, msg):
         target = msg.getArgs()
 
