@@ -17,6 +17,7 @@ class SearchPlugin(PlushiePlugin):
     }
 
     @plushieCmd("wiki", "wikipedia")
+    @commandDoc(extra="<item to search>", doc="Has Plushie search Wikipedia for <item to search>")
     def wikiCmd(self, ctx, msg):
         result = self.getSummary(msg.noCmdMsg(), self.BASE_URLS["wikipedia"][0])
         if not result[0]:
@@ -29,6 +30,7 @@ class SearchPlugin(PlushiePlugin):
                 ), msg.replyTo)
 
     @plushieCmd("simplewiki", "sw")
+    @commandDoc(extra="<item to search>", doc="Has Plushie search the Simple English Wiki for <item to search>")
     def neabWikiCmd(self, ctx, msg):
         result = self.getSummary(msg.noCmdMsg(), self.BASE_URLS["simple"][0])
         if not result[0]:
@@ -90,6 +92,7 @@ class SearchPlugin(PlushiePlugin):
 
 
     @plushieCmd("google")
+    @commandDoc(extra="<item to search>", doc="Has Plushie search Google for <item to search>")
     def googleStuff(self, ctx, msg):
         args = msg.getArgs()
 
@@ -99,6 +102,6 @@ class SearchPlugin(PlushiePlugin):
 
         if len(args) > 0:
             url = urllib.parse.quote_plus(msg.noCmdMsg())
-            ctx.msg("Here you go: https://www.google.com/#q={:s}".format(url), msg.replyTo)
+            ctx.msg("Here is the search result for '{:s}': https://www.google.com/#q={:s}".format(msg.noCmdMsg(), url), msg.replyTo)
         else:
             ctx.msg("Something has failed. Please contact Garth about it.", msg.replyTo)

@@ -9,6 +9,7 @@ class ChoicePlugin(PlushiePlugin):
     authors = ["Garth"]
 
     @plushieCmd("choice", "choose", "pick")
+    @commandDoc(extra="<list of things to choose from>", doc="Returns a single choice from a list of choices. Use a comma and a space to separate the choices")
     def run(self, ctx, msg):
         options = msg.noCmdMsg().split(", ")
         length = len(options)
