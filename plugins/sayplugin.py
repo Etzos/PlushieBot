@@ -17,3 +17,4 @@ class SayPlugin(PlushiePlugin):
             ctx.msg(msg.noCmdMsg())
         else:
             ctx.msg("/me bops {:s} on the head -- Don't pull my strings! d.b".format(msg.player))
+            

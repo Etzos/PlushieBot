@@ -50,7 +50,7 @@ class WerewolfPlugin(PlushiePlugin):
         self.startTime = 180
 
     @plushieCmd("start")
-    @commandDoc(doc="Enters you into a game of Werewolf is one has yet to be started")
+    @commandDoc(doc="Enters you into a game of Werewolf if one has yet to be started")
     def startCmd(self, ctx, msg):
         # Public ONLY
         args = msg.getArgs()
