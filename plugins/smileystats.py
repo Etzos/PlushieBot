@@ -95,7 +95,7 @@ class SmileyStatsPlugin(PlushiePlugin):
             else:
                 amt = res[0]
             
-            ctx.msg("I have seen everyone use {:s} smiley {:d} times.".format(smiley, amt), msg.replyTo)
+            ctx.msg("I have seen everyone use the {:s} smiley {:d} times.".format(smiley, amt), msg.replyTo)
             return
         
         #print("Get: {:d}".format(smileyID))
