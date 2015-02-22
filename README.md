@@ -15,5 +15,5 @@ installed on your computer. In order to use this server you must:
 * Navigate to the `loop/` directory and run the testconsole.py file (same way as the above)
 * Hope all goes well
 
-* I have included a batch file for Windows users to start both the server and Plushie
+* I have included a batch file for Windows users to start both the server and Plushie. Leave it in the current directory.
 * Pester Garth for the Linux version :P
