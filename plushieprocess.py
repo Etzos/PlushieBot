@@ -33,6 +33,7 @@ def botRunner(p):
             "greetplugin.GreetPlugin",
             "hangmanplugin.HangmanPlugin",
             "hashplugin.HashPlugin",
+            "helpplugin.HelpPlugin",
             "hugplugin.HugPlugin",
             "karmaplugin.KarmaPlugin",
             "kickplugin.KickPlugin",

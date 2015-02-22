@@ -7,6 +7,7 @@ class MumblePlugin(PlushiePlugin):
     authors = ["Garth"]
 
     @plushieCmd("mumble", "voip")
+    @commandDoc(doc="Gives the connection details for the Mumble server")
     def run(self, ctx, msg):
         ctx.msg("""The connection details for Garth's Mumble server are:
             [ADDRESS: 184.173.217.82

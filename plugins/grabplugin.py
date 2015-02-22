@@ -20,6 +20,7 @@ class GrabPlugin(PlushiePlugin):
     authors = ["Garth"]
 
     @plushieCmd("grab")
+    @commandDoc(extra="<player>", doc="Has Plushie grab <player>'s attention")
     def run(self, ctx, msg):
         target = msg.getArgs()
         playerTargets = ctx.config["grab"]["emails"]

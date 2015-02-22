@@ -83,6 +83,7 @@ class MathPlugin(PlushiePlugin):
 
 
     @plushieCmd("calc")
+    @commandDoc(extra="<expression>", doc="Returns the evaluation of <expression>")
     def calc(self, ctx, msg):
         args = msg.noCmdMsg()
         try:
@@ -96,6 +97,7 @@ class MathPlugin(PlushiePlugin):
         ctx.msg(reply, msg.replyTo)
 
     @plushieCmd("bcalc")
+    @commandDoc(extra="<expression>", doc="Returns the evaluation of <expression> in binary")
     def bcalc(self, ctx, msg):
         args = msg.noCmdMsg()
         try:
@@ -109,6 +111,7 @@ class MathPlugin(PlushiePlugin):
         ctx.msg(reply, msg.replyTo)
 
     @plushieCmd("shunt", "rpn")
+    @commandDoc(extra="<expression>", doc="Returns <expression> in infix notation")
     def shuntCmd(self, ctx, msg):
         args = msg.noCmdMsg()
         try:
