@@ -43,14 +43,14 @@ class HelpPlugin(PlushiePlugin):
                                     if x['follows'] == self.follows and (x['cmd'] == self.subcmd
                                     or self.subcmd in x['alias'])][0]
         except:
-            ctx.msg("[Plugin:Help] Error: Could not run the comprehension to find documentations.", msg.replyTo)
+            ctx.msg("{:s} is not a command. Please use an existing command.".format(msg.noCmdMsg()), msg.replyTo)
             return
         try:
             should_follow = None if not self.subcmd else args[-1:]
             self.followingcmds = [x['cmd'] for x in ctx.parent.commands[self.cmd]._doc if
                                   x['follows'] == should_follow and x['cmd']]
         except:
-            ctx.msg("[Plugin:Help] Error: Could not run the comprehension for following subcommands.", msg.replyTo)
+            ctx.msg("[Plugin:Help] Error: Could not run the comprehension for following subcommands. Contact Garth or WhiteKitsune.", msg.replyTo)
             return
         ctx.msg("Usage: !{:s}{:s} About: {:s}. Subcommands: {:s}".format(" ".join(args[0:]),
                                          " " + self.documentation[1] if self.documentation[1] else "",
