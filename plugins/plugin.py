@@ -23,10 +23,11 @@ class PlushiePlugin:
         yield from self.getMethods("isPlushieMessage")
 
 
-def plushieCmd(*name):
+def plushieCmd(*name, transforms={}):
     def decorator(func):
         func.isPlushieCommand = True
         func.plushieCommand = name
+        func.commandTransforms = transforms
         return func
     return decorator
 

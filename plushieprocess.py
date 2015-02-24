@@ -1,5 +1,4 @@
 import json
-from multiprocessing import Process, Pipe
 import socket
 import sqlite3
 from threading import Thread
@@ -165,11 +164,16 @@ def botRunner(p):
 
 
 if __name__ == '__main__':
-    # Use a Process to make sure that it checks every 4 seconds (instead of being blocked by the GIL)
+    from platform import system
+    sys_name = system()
+    if sys_name == "Linux":
+        from multiprocessing import Process, Pipe
+    else:
+        from multiprocessing.dummy import Process, Pipe
+
+
     parentPipe, childPipe = Pipe()
-#    runnerEnd, managerEnd = Pipe()
     sched = Process(target=botRunner, args=(childPipe,))
-    #runner = Process(target=botRunner, args=(runnerEnd,))
     sched.start()
     while True:
         r = input("> ")

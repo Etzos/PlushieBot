@@ -34,7 +34,6 @@ def read_log(logfile, destructive=False):
             stripped = line.rstrip('\n')
             if stripped == "":
                 continue
-            print(line)
             messages.append(line)
     if destructive:
         open(logfile, "w").close()

@@ -25,6 +25,7 @@ class PluginManager:
         self.config = config
         self.plugins = {}
         self.commands = {}
+        self.transforms = {}
         self.msghandlers = []
         self.tick = []
         self.ctx = self.CommandContext(chatManager, self)
@@ -35,6 +36,8 @@ class PluginManager:
             names = getattr(cmd, "plushieCommand")
             for n in names:
                 self.commands[n] = cmd
+            # Add transforms
+            self.transforms.update(getattr(cmd, "commandTransforms"))
         for tick in plugin.getTick():
             self.tick.append(tick)
         for handle in plugin.getMessageHandlers():
@@ -55,6 +58,13 @@ class PluginManager:
         if message.isCommand():
             args = message.msgArg()
             cmd = args[0][1:].lower()
+            # Apply transforms
+            if cmd in self.transforms:
+                parts = self.transforms[cmd].split(" ")
+                cmd = parts[0]
+                # This is some nasty joojoo; the Message gets hot-modified here
+                parts.extend(message.msgArg()[1:]) # For now only 1->many transforms are allowed
+                message.msg = "!" + " ".join(parts)
             if cmd in self.commands:
                 try:
                     self.commands[cmd](self.ctx, message)
