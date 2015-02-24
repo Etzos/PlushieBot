@@ -11,7 +11,7 @@ class StatPlugin(PlushiePlugin):
     def __init__(self):
         self.db = sqlite3.connect("chat.db")
 
-    @plushieCmd("stats", "stat")
+    @plushieCmd("stats", "stat", transforms={"toplines": "stats toplines"})
     @commandDoc(doc="Has Plushie return various stats about chat lines")
     @commandDoc(cmd="lines", extra="<player>", doc="Returns how many lines Plushie has seen <player> say")
     @commandDoc(cmd="toplines", doc="Returns the top 5 players who have spoken the most and the amount of lines they have said")
