@@ -115,7 +115,6 @@ class SearchPlugin(PlushiePlugin):
             ctx.msg("There is nothing to search.", msg.replyTo)
             return
 
-        if len(args) > 0:
             url = urllib.parse.quote_plus(msg.noCmdMsg())
             ctx.msg("Here is the search result for '{:s}': https://www.youtube.com/results?search_query={:s}".format (msg.noCmdMsg(), url), msg.replyTo)
         else:
