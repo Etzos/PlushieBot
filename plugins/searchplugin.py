@@ -117,5 +117,3 @@ class SearchPlugin(PlushiePlugin):
 
             url = urllib.parse.quote_plus(msg.noCmdMsg())
             ctx.msg("Here is the search result for '{:s}': https://www.youtube.com/results?search_query={:s}".format (msg.noCmdMsg(), url), msg.replyTo)
-        else:
-            ctx.msg("Something has failed. Please contact Zarda about it.", msg.replyTo)
