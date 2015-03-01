@@ -6,7 +6,7 @@ import random
 class CelebratePlugin(PlushiePlugin):
     name = "Celebration Plugin"
     description = "Give Plushie some awesome celebration lines"
-    authors = ["Garth, Zarda"]
+    authors = ["Garth", "Zarda"]
 
     @plushieCmd("celebrate")
     @commandDoc(doc="Has Plushie celebrate")
