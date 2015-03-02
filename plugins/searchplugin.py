@@ -100,8 +100,8 @@ class SearchPlugin(PlushiePlugin):
             ctx.msg("I can't google nothing.", msg.replyTo)
             return
 
-            url = urllib.parse.quote_plus(msg.noCmdMsg())
-            ctx.msg("Here is the search result for '{:s}': https://www.google.com/#q={:s}".format(msg.noCmdMsg(), url), msg.replyTo)
+        url = urllib.parse.quote_plus(msg.noCmdMsg())
+        ctx.msg("Here is the search result for '{:s}': https://www.google.com/#q={:s}".format(msg.noCmdMsg(), url), msg.replyTo)
       
 
     @plushieCmd("youtube")
@@ -113,5 +113,5 @@ class SearchPlugin(PlushiePlugin):
             ctx.msg("There is nothing to search.", msg.replyTo)
             return
 
-            url = urllib.parse.quote_plus(msg.noCmdMsg())
-            ctx.msg("Here is the search result for '{:s}': https://www.youtube.com/results?search_query={:s}".format (msg.noCmdMsg(), url), msg.replyTo)
+        url = urllib.parse.quote_plus(msg.noCmdMsg())
+        ctx.msg("Here is the search result for '{:s}': https://www.youtube.com/results?search_query={:s}".format (msg.noCmdMsg(), url), msg.replyTo)
