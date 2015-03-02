@@ -100,11 +100,9 @@ class SearchPlugin(PlushiePlugin):
             ctx.msg("I can't google nothing.", msg.replyTo)
             return
 
-        if len(args) > 0:
             url = urllib.parse.quote_plus(msg.noCmdMsg())
             ctx.msg("Here is the search result for '{:s}': https://www.google.com/#q={:s}".format(msg.noCmdMsg(), url), msg.replyTo)
-        else:
-            ctx.msg("Something has failed. Please contact Garth about it.", msg.replyTo)
+      
 
     @plushieCmd("youtube")
     @commandDoc(extra="<item to search>", doc="Has Plushie search YouTube for <item to search>")
