@@ -8,7 +8,7 @@ import re
 class SearchPlugin(PlushiePlugin):
     name = "Wikipedia Access and Google Plugins"
     description = "Access and summarize English Wikipedia articles and have Plushie search Google for you"
-    authors = ["Garth", "Kitsune30"]
+    authors = ["Garth", "Kitsune30", "Zarda"]
     
     BASE_URLS = {
         # API, Wiki page
@@ -100,8 +100,18 @@ class SearchPlugin(PlushiePlugin):
             ctx.msg("I can't google nothing.", msg.replyTo)
             return
 
-        if len(args) > 0:
-            url = urllib.parse.quote_plus(msg.noCmdMsg())
-            ctx.msg("Here are the search results for '{:s}': https://www.google.com/#q={:s}".format(msg.noCmdMsg(), url), msg.replyTo)
-        else:
-            ctx.msg("Something has failed. Please contact Garth about it.", msg.replyTo)
+        url = urllib.parse.quote_plus(msg.noCmdMsg())
+        ctx.msg("Here are the search results for '{:s}': https://www.google.com/#q={:s}".format(msg.noCmdMsg(), url), msg.replyTo)
+      
+
+    @plushieCmd("youtube")
+    @commandDoc(extra="<item to search>", doc="Has Plushie search YouTube for <item to search>")
+    def youtubeStuff(self, ctx, msg):
+        args = msg.getArgs()
+
+        if len(args) < 1:
+            ctx.msg("There is nothing to search.", msg.replyTo)
+            return
+
+        url = urllib.parse.quote_plus(msg.noCmdMsg())
+        ctx.msg("Here is the search result for '{:s}': https://www.youtube.com/results?search_query={:s}".format (msg.noCmdMsg(), url), msg.replyTo)
