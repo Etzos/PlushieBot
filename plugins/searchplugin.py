@@ -115,3 +115,38 @@ class SearchPlugin(PlushiePlugin):
 
         url = urllib.parse.quote_plus(msg.noCmdMsg())
         ctx.msg("Here is the search result for '{:s}': https://www.youtube.com/results?search_query={:s}".format (msg.noCmdMsg(), url), msg.replyTo)
+
+    @plushieCmd("define", "definition")
+    @commandDoc(extra="<word>", doc="Has Plushie search wiktionary for the definition of <word>")
+    def defineStuff(self, ctx, msg):
+        args = msg.noCmdMsg().lower()
+        
+        if len(args) < 1:
+            ctx.msg("I can't define nothing.", msg.replyTo)
+            return
+        
+        results = SearchPlugin.defineWord(ctx.config["hangman"]["api-key"], args)
+        if not results:
+            ctx.msg("There was no definition for this word.", msg.replyTo)
+            return
+        else:
+            ctx.msg("{:s} : {:s}".format(args, results))
+            return
+        
+    @staticmethod
+    def defineWord(api_key, words)
+        siteURL = "http://apri.wordnik.com/v4/word.json"
+        HTMLwords = urllib.parse.quote(words)
+        parameters = urllib.parse.urlencode({
+            "limit": 1,
+            "includeRelated": False,
+            "sourceDictionaries": "wiktionary",
+            "useCanonical": False,
+            "includeTags": False,
+            "api_key": api_key
+            })
+        res = urllib.request.urlopen("{:s}/{:s}/definitions?{:s}".format(siteURL, HTMLwords, parameters))
+        jobj = res.read().decode('utf-8')
+        jparse = json.loads(jobj)
+        return jparse['text']
+        
