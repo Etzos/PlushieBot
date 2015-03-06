@@ -130,11 +130,11 @@ class SearchPlugin(PlushiePlugin):
             ctx.msg("There was no definition for this word.", msg.replyTo)
             return
         else:
-            ctx.msg("{:s} : {:s}".format(args, results))
+            ctx.msg("{:s} : {:s}".format(args, results['text']))
             return
         
     @staticmethod
-    def defineWord(api_key, words)
+    def defineWord(api_key, words):
         siteURL = "http://api.wordnik.com/v4/word.json"
         HTMLwords = urllib.parse.quote(words)
         parameters = urllib.parse.urlencode({
@@ -148,4 +148,4 @@ class SearchPlugin(PlushiePlugin):
         res = urllib.request.urlopen("{:s}/{:s}/definitions?{:s}".format(siteURL, HTMLwords, parameters))
         jobj = res.read().decode('utf-8')
         jparse = json.loads(jobj)
-        return jparse['text']
+        return jparse[0] if len(jparse) > 0 else None
