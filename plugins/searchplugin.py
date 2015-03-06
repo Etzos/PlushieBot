@@ -149,4 +149,3 @@ class SearchPlugin(PlushiePlugin):
         jobj = res.read().decode('utf-8')
         jparse = json.loads(jobj)
         return jparse['text']
-        
