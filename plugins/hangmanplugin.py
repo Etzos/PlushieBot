@@ -40,7 +40,7 @@ class HangmanPlugin(PlushiePlugin):
                     if not arg.isalpha():
                         ctx.msg("The word you have told me contains characters other than letters. Please only use letters.", msg.player)
                         return
-                    if not self.checkWord(ctx.config["hangman"]["api-key"], arg):
+                    if not HangmanPlugin.checkWord(ctx.config["hangman"]["api-key"], arg):
                         badwords += 1
 
                 if not self.word:
@@ -174,7 +174,7 @@ class HangmanPlugin(PlushiePlugin):
     @staticmethod
     def getWord(api_key, minCorpus=6000, maxCorpus=-1, minLength=5, maxLength=20):
         siteURL = "http://api.wordnik.com/v4/words.json/randomWord"
-        paramaters = urllib.parse.urlencode({
+        parameters = urllib.parse.urlencode({
             "hasDictionaryDef": True,
             "includePartOfSpeech": "noun",
             "minCorpusCount": minCorpus,
@@ -185,7 +185,7 @@ class HangmanPlugin(PlushiePlugin):
             "maxLength": maxLength,
             "api_key": api_key
         })
-        res = urllib.request.urlopen("{:s}?{:s}".format(siteURL, paramaters))
+        res = urllib.request.urlopen("{:s}?{:s}".format(siteURL, parameters))
         jobj = res.read().decode('utf-8')
         jparse = json.loads(jobj)
         return jparse['word']
@@ -193,7 +193,7 @@ class HangmanPlugin(PlushiePlugin):
     @staticmethod
     def checkWord(api_key, word, minCorpus=5, maxCorpus=-1, minLength=1, maxLength=-1):
         siteURL = "http://api.wordnik.com/v4/words.json/search"
-        paramaters = urllib.parse.urlencode({
+        parameters = urllib.parse.urlencode({
             "minCorpusCount": minCorpus,
             "maxCorpusCount": maxCorpus,
             "minDictionaryCount": 0,
@@ -203,7 +203,7 @@ class HangmanPlugin(PlushiePlugin):
             "api_key": api_key,
             "caseSensitive": False
         })
-        res = urllib.request.urlopen("{:s}/{:s}?{:s}".format(siteURL, word, paramaters))
+        res = urllib.request.urlopen("{:s}/{:s}?{:s}".format(siteURL, word, parameters))
         jobj = res.read().decode('utf-8')
         jparse = json.loads(jobj)
         return not jparse['totalResults'] == 0
