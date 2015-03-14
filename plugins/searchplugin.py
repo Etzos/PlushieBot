@@ -5,6 +5,11 @@ import urllib.request
 import json
 import re
 
+parts_of_speech = ["noun", "adjective", "verb", "adverb", "interjection", "pronoun", "abbreviation", "affix", "article",
+                   "auxiliary-verb", "conjunction", "definite-article", "family-name", "given-name", "idiom", "imperative",
+                   "noun-plural", "noun-posessive", "past-participle", "phrasal-prefix", "proper-noun", "proper-noun-plural",
+                   "proper-noun=posessive", "suffix", "verb-intransitive", "verb-transitive"]
+
 class SearchPlugin(PlushiePlugin):
     name = "Wikipedia Access and Google Plugins"
     description = "Access and summarize English Wikipedia articles and have Plushie search Google for you"
@@ -124,17 +129,19 @@ class SearchPlugin(PlushiePlugin):
         if len(args) < 1:
             ctx.msg("I can't define nothing.", msg.replyTo)
             return
-        if len(args) == 2:
-            pos = args[1]
+        if len(args) > 1 and args[-1] in parts_of_speech:
+            defined = " ".join(args[:-1])
+            pos = args[-1]
         else:
-            pos = None
+            defined = " ".join(args)
+            pos = ""
 
-        results = SearchPlugin.defineWord(ctx.config["hangman"]["api-key"], args[0], pos)
+        results = SearchPlugin.defineWord(ctx.config["hangman"]["api-key"], defined, pos)
         if not results:
             ctx.msg("There was no definition for this word.", msg.replyTo)
             return
         else:
-            ctx.msg("{:s} : {:s}".format(args[0], results['text']), msg.replyTo)
+            ctx.msg("{:s} : {:s}".format(defined, results['text']), msg.replyTo)
             return
 
     @staticmethod
