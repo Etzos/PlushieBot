@@ -9,7 +9,7 @@ class SearchPlugin(PlushiePlugin):
     name = "Wikipedia Access and Google Plugins"
     description = "Access and summarize English Wikipedia articles and have Plushie search Google for you"
     authors = ["Garth", "Kitsune30", "Zarda"]
-        
+
     BASE_URLS = {
         # API, Wiki page
         "wikipedia": ("http://en.wikipedia.org/w/api.php", "http://en.wikipedia.org/wiki/"),
@@ -102,7 +102,7 @@ class SearchPlugin(PlushiePlugin):
 
         url = urllib.parse.quote_plus(msg.noCmdMsg())
         ctx.msg("Here are the search results for '{:s}': https://www.google.com/#q={:s}".format(msg.noCmdMsg(), url), msg.replyTo)
-      
+
 
     @plushieCmd("youtube")
     @commandDoc(extra="<item to search>", doc="Has Plushie search YouTube for <item to search>")
@@ -119,9 +119,8 @@ class SearchPlugin(PlushiePlugin):
     @plushieCmd("define", "definition")
     @commandDoc(extra="<word>", doc="Has Plushie search wiktionary for the definition of <word>")
     def defineStuff(self, ctx, msg):
-        words = msg.getArgs()
-        args = list(map(lambda x: x.lower(), words))
-        
+        args = list(map(lambda x: x.lower(), msg.getArgs()))
+
         if len(args) < 1:
             ctx.msg("I can't define nothing.", msg.replyTo)
             return
@@ -129,7 +128,7 @@ class SearchPlugin(PlushiePlugin):
             pos = args[1]
         else:
             pos = None
-            
+
         results = SearchPlugin.defineWord(ctx.config["hangman"]["api-key"], args[0], pos)
         if not results:
             ctx.msg("There was no definition for this word.", msg.replyTo)
@@ -137,7 +136,7 @@ class SearchPlugin(PlushiePlugin):
         else:
             ctx.msg("{:s} : {:s}".format(args[0], results['text']), msg.replyTo)
             return
-            
+
     @staticmethod
     def defineWord(api_key, words, pos):
         siteURL = "http://api.wordnik.com/v4/word.json"
