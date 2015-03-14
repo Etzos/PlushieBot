@@ -9,11 +9,8 @@ class SayPlugin(PlushiePlugin):
     @plushieCmd("say")
     @commandDoc(extra="<things for Plushie to say>", doc="Has Plushie say <things for Plushie to say>")
     def run(self, ctx, msg):
-        if msg.player == "Garth":
+        if msg.player == "Garth" or "WhiteKitsune":
             ctx.msg(msg.noCmdMsg())
             return
-        elif msg.player == "WhiteKitsune":
-            ctx.msg("/msg Garth WhiteKitsune is telling me to say: {:s}".format(msg.noCmdMsg()))
-            ctx.msg(msg.noCmdMsg())
         else:
             ctx.msg("/me bops {:s} on the head -- Don't pull my strings! d.b".format(msg.player))

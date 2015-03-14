@@ -8,7 +8,7 @@ import re
 class SearchPlugin(PlushiePlugin):
     name = "Wikipedia Access and Google Plugins"
     description = "Access and summarize English Wikipedia articles and have Plushie search Google for you"
-    authors = ["Garth", "Kitsune30"]
+    authors = ["Garth", "Kitsune30", "Zarda"]
     
     BASE_URLS = {
         # API, Wiki page
@@ -100,8 +100,52 @@ class SearchPlugin(PlushiePlugin):
             ctx.msg("I can't google nothing.", msg.replyTo)
             return
 
-        if len(args) > 0:
-            url = urllib.parse.quote_plus(msg.noCmdMsg())
-            ctx.msg("Here is the search result for '{:s}': https://www.google.com/#q={:s}".format(msg.noCmdMsg(), url), msg.replyTo)
+        url = urllib.parse.quote_plus(msg.noCmdMsg())
+        ctx.msg("Here are the search results for '{:s}': https://www.google.com/#q={:s}".format(msg.noCmdMsg(), url), msg.replyTo)
+      
+
+    @plushieCmd("youtube")
+    @commandDoc(extra="<item to search>", doc="Has Plushie search YouTube for <item to search>")
+    def youtubeStuff(self, ctx, msg):
+        args = msg.getArgs()
+
+        if len(args) < 1:
+            ctx.msg("There is nothing to search.", msg.replyTo)
+            return
+
+        url = urllib.parse.quote_plus(msg.noCmdMsg())
+        ctx.msg("Here is the search result for '{:s}': https://www.youtube.com/results?search_query={:s}".format (msg.noCmdMsg(), url), msg.replyTo)
+
+    @plushieCmd("define", "definition")
+    @commandDoc(extra="<word>", doc="Has Plushie search wiktionary for the definition of <word>")
+    def defineStuff(self, ctx, msg):
+        args = msg.noCmdMsg().lower()
+        
+        if len(args) < 1:
+            ctx.msg("I can't define nothing.", msg.replyTo)
+            return
+        
+        results = SearchPlugin.defineWord(ctx.config["hangman"]["api-key"], args)
+        if not results:
+            ctx.msg("There was no definition for this word.", msg.replyTo)
+            return
         else:
-            ctx.msg("Something has failed. Please contact Garth about it.", msg.replyTo)
+            ctx.msg("{:s} : {:s}".format(args, results['text']))
+            return
+        
+    @staticmethod
+    def defineWord(api_key, words):
+        siteURL = "http://api.wordnik.com/v4/word.json"
+        HTMLwords = urllib.parse.quote(words)
+        parameters = urllib.parse.urlencode({
+            "limit": 1,
+            "includeRelated": False,
+            "sourceDictionaries": "wiktionary",
+            "useCanonical": False,
+            "includeTags": False,
+            "api_key": api_key
+            })
+        res = urllib.request.urlopen("{:s}/{:s}/definitions?{:s}".format(siteURL, HTMLwords, parameters))
+        jobj = res.read().decode('utf-8')
+        jparse = json.loads(jobj)
+        return jparse[0] if len(jparse) > 0 else None
