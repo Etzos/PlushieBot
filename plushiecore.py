@@ -20,7 +20,6 @@ def run_plushie(config, outputs, inputs):
             "kickplugin.KickPlugin",
             "lastseenplugin.LastSeenPlugin",
             "listplugin.ListPlugin",
-#            "listenplugin.ListenPlugin",
             "mathplugin.MathPlugin",
             "mumbleplugin.MumblePlugin",
             "pingplugin.PingPlugin",
@@ -66,7 +65,7 @@ def run_plushie(config, outputs, inputs):
 
     current_time = time.time()
     previous_time = current_time
-    tick_time = 4 # seconds between 'ticks'
+    tick_time = 4  # seconds between 'ticks'
     while True:
         current_time = time.time()
         timediff = current_time - previous_time

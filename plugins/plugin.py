@@ -4,7 +4,6 @@ class PlushiePlugin:
     description = "Short plugin description"
     authors = []
 
-
     def getMethods(self, attrMatch=None):
         for attrName in dir(self):
             attr = getattr(self, attrName)
@@ -31,11 +30,13 @@ def plushieCmd(*name, transforms={}):
         return func
     return decorator
 
+
 def plushieTick():
     def decorator(func):
         func.isPlushieTick = True
         return func
     return decorator
+
 
 def plushieMsg():
     def decorator(func):
@@ -43,9 +44,9 @@ def plushieMsg():
         return func
     return decorator
 
+
 def commandDoc(cmd=None, alias=(), follows=None, extra=None, doc=""):
-    """
-    Decorator for storing documentation (help) for subcommands
+    """Decorator for storing documentation (help) for subcommands
 
     cmd - The command (or subcommand) to be documented
     alias - A tuple containing the possible aliases for the command

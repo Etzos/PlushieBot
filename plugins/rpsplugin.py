@@ -1,8 +1,8 @@
 from .plugin import *
 
-#import sqlite3
 import datetime
 import random
+
 
 class Challenge:
     ROCK, PAPER, SCISSORS, LIZARD, SPOCK = range(5)
@@ -26,36 +26,33 @@ class RPSPlugin(PlushiePlugin):
     authors = ["Garth"]
 
     def __init__(self):
-#        self.db = sqlite3.connect("rps.db")
-
-#        self.db.execute("""
-#            CREATE TABLE IF NOT EXISTS challenge (
-#            id INTEGER PRIMARY KEY AUTOINCREMENT,
-#            challenger INTEGER REFRENCES player(id) ON UPDATE CASCASE,
-#            challengerChoice INTEGER,
-#            target INTEGER REFRENCES player(id) ON UPDATE CASCADE,
-#            targetChoice INTEGER,
-#            challengeTime TEXT
-#            )""")
-
-#        self.db.execute("""
-#            CREATE TABLE IF NOT EXISTS player (
-#            id INTEGER PRIMARY KEY AUTOINCREMENT,
-#            name TEXT NOT NULL,
-#            normalizedName TEXT NOT NULL,
-#            win INTEGER DEFAULT 0,
-#            loss INTEGER DEFAULT 0
-#            )""")
-#        self.db.commit()
-
         self.challenges = []
+    #    self.db = sqlite3.connect("rps.db")
+    #
+    #    self.db.execute("""
+    #        CREATE TABLE IF NOT EXISTS challenge (
+    #        id INTEGER PRIMARY KEY AUTOINCREMENT,
+    #        challenger INTEGER REFRENCES player(id) ON UPDATE CASCASE,
+    #        challengerChoice INTEGER,
+    #        target INTEGER REFRENCES player(id) ON UPDATE CASCADE,
+    #        targetChoice INTEGER,
+    #        challengeTime TEXT
+    #        )""")
+    #
+    #    self.db.execute("""
+    #        CREATE TABLE IF NOT EXISTS player (
+    #        id INTEGER PRIMARY KEY AUTOINCREMENT,
+    #        name TEXT NOT NULL,
+    #        normalizedName TEXT NOT NULL,
+    #        win INTEGER DEFAULT 0,
+    #        loss INTEGER DEFAULT 0
+    #        )""")
+    #    self.db.commit()
 
     def pickWinner(self, choiceOne, choiceTwo):
-        '''
-        -1 = one won
-         0 = tie
-         1 = two won
-        '''
+        # -1 = one won
+        # 0 = tie
+        # 1 = two won
         if choiceOne == Challenge.ROCK:
             if choiceTwo == Challenge.ROCK:
                 return 0

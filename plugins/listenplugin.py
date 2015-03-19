@@ -21,9 +21,11 @@ class ListenPlugin(PlushiePlugin):
         reply = ""
 
         if amarok.getTitle():
-            reply += baseMsg.format(amarok.getTitle(), amarok.getStatus(), amarok.getArtist(), amarok.getAlbum(), "Amarok")
+            reply += baseMsg.format(amarok.getTitle(), amarok.getStatus(), amarok.getArtist(), amarok.getAlbum(),
+                                    "Amarok")
         if spotify.getTitle():
-            reply += baseMsg.format(spotify.getTitle(), spotify.getStatus(), spotify.getArtist(), spotify.getAlbum(), "Spotify")
+            reply += baseMsg.format(spotify.getTitle(), spotify.getStatus(), spotify.getArtist(), spotify.getAlbum(),
+                                    "Spotify")
 
         if reply == "":
             ctx.msg("Garth is not listening to any music right now",

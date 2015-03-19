@@ -14,6 +14,7 @@ def send_message(config, message, toaddr):
                     "Subject: NEaB Chat\n\n{:s}".format(message))
     server.quit()
 
+
 class GrabPlugin(PlushiePlugin):
     name = "Grab Plugin"
     description = "Get someone's attention."

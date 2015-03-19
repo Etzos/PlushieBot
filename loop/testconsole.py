@@ -1,8 +1,8 @@
 import tkinter as tk
 from writer import read_log, write_log, full_message
 
-class Application(tk.Frame):
 
+class Application(tk.Frame):
     def __init__(self, master=None):
         tk.Frame.__init__(self, master)
         self.grid(sticky="nsew")
@@ -30,9 +30,9 @@ class Application(tk.Frame):
                            yscrollcommand=self.log_scroll.set,
                            width=120,
                            height=35)
-        self.log.insert(tk.INSERT, "Welcome to the PlushieBot test console.\nThis needs to be run in tandem " \
-                        "with the PlushieBot console in order to work properly.\nNOTE: The first field is " \
-                        "the username (prepend the word 'from' in order to make a whisper),\nthe second the " \
+        self.log.insert(tk.INSERT, "Welcome to the PlushieBot test console.\nThis needs to be run in tandem "
+                        "with the PlushieBot console in order to work properly.\nNOTE: The first field is "
+                        "the username (prepend the word 'from' in order to make a whisper),\nthe second the "
                         "message itself. The time used should be your current system time.\n\n")
         self.log["state"] = tk.DISABLED
         self.log.pack()

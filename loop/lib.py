@@ -3,12 +3,11 @@ A library designed to simulate the NEaB chat lib (while providing debugging tool
 
 @author: Garth
 """
-
 from time import strftime
 from .writer import read_log, write_log, full_message
 
-class Profile:
 
+class Profile:
     def __init__(self, username):
         self.username = username
 
@@ -17,7 +16,6 @@ class Profile:
 
 
 class ChatOnline:
-
     def __init__(self, profile):
         self.profile = profile
 
@@ -26,7 +24,6 @@ class ChatOnline:
 
 
 class ChatLib:
-
     def __init__(self, profile):
         self.profile = profile
         self.lastMsgIndex = 0

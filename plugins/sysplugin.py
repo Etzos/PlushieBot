@@ -8,16 +8,16 @@ class SysPlugin(PlushiePlugin):
 
     @plushieCmd("sys", "system", "sysstats")
     @commandDoc(doc="Returns information about Plushie's server")
-    @commandDoc(cmd="battery", alias=("bat",), 
+    @commandDoc(cmd="battery", alias=("bat",),
                 doc="Returns the percentage of Plushie's server's battery and whether it is plugged in or not")
     def base_command(self, ctx, msg):
         args = msg.getArgs()
         arglen = len(args)
-        
+
         if not arglen:
             ctx.msg("At least one sub-command must be given.", msg.replyTo)
             return
-        
+
         argone = args[0].lower()
         if argone == "bat" or argone == "battery":
             stat = battery_stats()
@@ -25,7 +25,7 @@ class SysPlugin(PlushiePlugin):
             plug = "Discharging" if stat['POWER_SUPPLY_STATUS'] == "Discharging" else "Plugged in"
             ctx.msg("The current battery status is {:.1%} ({})".format(level, plug), msg.replyTo)
             return
-            
+
         ctx.msg("Unknown sub-command '{}'".format(args[0]), msg.replyTo)
 
 
