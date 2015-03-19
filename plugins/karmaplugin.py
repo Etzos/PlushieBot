@@ -156,8 +156,8 @@ class KarmaPlugin(PlushiePlugin):
         res = self.db.execute("""SELECT item, added, subtracted,
                                         added-subtracted
                                  FROM karma
-                                 ORDER BY {:s} DESC
-                                 LIMIT {:s}""".format(orderby, limit))
+                                 ORDER BY ? DESC
+                                 LIMIT ?""", (orderby, limit,))
         return res.fetchall()
 
     def addHistory(self, player, target, add=True):
