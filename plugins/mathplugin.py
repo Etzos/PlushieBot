@@ -10,40 +10,43 @@ Symbol = namedtuple("Symbol", ["args", "operation", "type", "maxArgs"])
 Op = namedtuple("Op", Symbol._fields + ("side", "precidence"))
 
 
-_sine =     Symbol(type="func", args=1, maxArgs=1, operation=lambda a: math.sin(a))
-_cosine =   Symbol(type="func", args=1, maxArgs=1, operation=lambda a: math.sin(a))
-_tangent =  Symbol(type="func", args=1, maxArgs=1, operation=lambda a: math.tan(a))
-_log =      Symbol(type="func", args=2, maxArgs=2, operation=lambda a, b: math.log(a, b))
-_log10 =    Symbol(type="func", args=1, maxArgs=1, operation=lambda a: math.log10(a))
-_ln =       Symbol(type="func", args=1, maxArgs=1, operation=lambda a: math.log(a))
-_sqrt =     Symbol(type="func", args=1, maxArgs=1, operation=lambda a: math.sqrt(a))
-_base =     Symbol(type="func", args=2, maxArgs=2, operation=lambda a, b: int(str(a), b))
+_sine = Symbol(type="func", args=1, maxArgs=1, operation=lambda a: math.sin(a))
+_cosine = Symbol(type="func", args=1, maxArgs=1, operation=lambda a: math.sin(a))
+_tangent = Symbol(type="func", args=1, maxArgs=1, operation=lambda a: math.tan(a))
+_log = Symbol(type="func", args=2, maxArgs=2, operation=lambda a, b: math.log(a, b))
+_log10 = Symbol(type="func", args=1, maxArgs=1, operation=lambda a: math.log10(a))
+_ln = Symbol(type="func", args=1, maxArgs=1, operation=lambda a: math.log(a))
+_sqrt = Symbol(type="func", args=1, maxArgs=1, operation=lambda a: math.sqrt(a))
+_base = Symbol(type="func", args=2, maxArgs=2, operation=lambda a, b: int(str(a), b))
+
 
 # This function and the below taken from http://en.literateprograms.org/Fibonacci_numbers_%28Python%29
 def powLF(n):
-    if n == 1:     return (1, 1)
+    if n == 1:
+        return (1, 1)
     L, F = powLF(n//2)
-    L, F = (L**2 + 5*F**2) >> 1, L*F
+    L, F = (L**2 + 5 * F**2) >> 1, L * F
     if n & 1:
-        return ((L + 5*F)>>1, (L + F) >>1)
+        return ((L + 5 * F) >> 1, (L + F) >> 1)
     else:
         return (L, F)
 
+
 def fib(n):
     return powLF(n)[1]
-        
+
 
 symbols = {
     # Ops
     "~": Op(type="op", args=1, maxArgs=1, side="right", precidence=3, operation=lambda a: ~a),
-    "|": Op(type="op", args=2, maxArgs=2, side="left", precidence=4, operation=lambda a, b: a|b),
-    "&": Op(type="op", args=2, maxArgs=2, side="left", precidence=5, operation=lambda a, b: a&b),
-    "<<": Op(type="op", args=2, maxArgs=2, side="left", precidence=6, operation=lambda a, b: a<<b),
-    ">>": Op(type="op", args=2, maxArgs=2, side="left", precidence=6, operation=lambda a, b: a>>b),
-    "+": Op(type="op", args=2, maxArgs=2, side="left", precidence=7, operation=lambda a, b: a+b),
-    "-": Op(type="op", args=2, maxArgs=2, side="left", precidence=7, operation=lambda a, b: a-b),
-    "*": Op(type="op", args=2, maxArgs=2, side="left", precidence=8, operation=lambda a, b: a*b),
-    "/": Op(type="op", args=2, maxArgs=2, side="left", precidence=8, operation=lambda a, b: a/b),
+    "|": Op(type="op", args=2, maxArgs=2, side="left", precidence=4, operation=lambda a, b: a | b),
+    "&": Op(type="op", args=2, maxArgs=2, side="left", precidence=5, operation=lambda a, b: a & b),
+    "<<": Op(type="op", args=2, maxArgs=2, side="left", precidence=6, operation=lambda a, b: a << b),
+    ">>": Op(type="op", args=2, maxArgs=2, side="left", precidence=6, operation=lambda a, b: a >> b),
+    "+": Op(type="op", args=2, maxArgs=2, side="left", precidence=7, operation=lambda a, b: a + b),
+    "-": Op(type="op", args=2, maxArgs=2, side="left", precidence=7, operation=lambda a, b: a - b),
+    "*": Op(type="op", args=2, maxArgs=2, side="left", precidence=8, operation=lambda a, b: a * b),
+    "/": Op(type="op", args=2, maxArgs=2, side="left", precidence=8, operation=lambda a, b: a / b),
     "%": Op(type="op", args=2, maxArgs=2, side="left", precidence=8, operation=lambda a, b: math.fmod(a, b)),
     "^": Op(type="op", args=2, maxArgs=2, side="right", precidence=9, operation=lambda a, b: math.pow(a, b)),
     "!": Op(type="op", args=1, maxArgs=1, side="right", precidence=10, operation=lambda a: math.factorial(a)),
@@ -76,11 +79,11 @@ symbols = {
     "e": Symbol(type="const", args=0, maxArgs=0, operation=lambda: math.e)
 }
 
+
 class MathPlugin(PlushiePlugin):
     name = "Math Plugin"
     description = "Provides some mathematical understanding to Plushie"
     author = ["Garth"]
-
 
     @plushieCmd("calc")
     @commandDoc(extra="<expression>", doc="Returns the evaluation of <expression>")
@@ -92,7 +95,7 @@ class MathPlugin(PlushiePlugin):
             reply = "Answer is: {:g}".format(res)
         except RuntimeError as e:
             reply = e.args[0]
-        except OverflowError: # This only happens with the fib() function
+        except OverflowError:  # This only happens with the fib() function
             reply = "Resulting value is too large."
         ctx.msg(reply, msg.replyTo)
 
@@ -106,7 +109,7 @@ class MathPlugin(PlushiePlugin):
             reply = "Answer is: {0:#b}".format(res)
         except RuntimeError as e:
             reply = e.args[0]
-        except OverflowError: # This only happens with the fib() function
+        except OverflowError:  # This only happens with the fib() function
             reply = "Resulting value is too large."
         ctx.msg(reply, msg.replyTo)
 
@@ -130,7 +133,7 @@ class MathPlugin(PlushiePlugin):
         # The '-' character can actually mean either the binary subtract operator or the unary negate operator.
         # To find out which it is, we use the fact that a binary operator can not show up right after another
         # operator or a left parenthesis.
-        ## This means I have to keep track of the previous token
+        # This means I have to keep track of the previous token
         previousToken = None
         try:
             for token in self.tokenize(string):
@@ -171,12 +174,14 @@ class MathPlugin(PlushiePlugin):
                                 raise RuntimeError("Unmatched parentheses")
                 # Handle operator precidence
                 elif token.type == "OP":
-                    if not token.value in symbols or symbols[token.value].type != "op":
+                    if token.value not in symbols or symbols[token.value].type != "op":
                         raise RuntimeError("Undefined operator {:s}!".format(token.value))
                     # Check to see if the negative is unary, if it is set it as _
                     # Binary can have no op or left paren to its left, so check for that
-                    if (token.value == "-" or token.value == "+") and (not previousToken or (previousToken.type == "OP" or previousToken.type == "LPAREN")):
-                        # NOTE: Kind of a hack, for the unary I just double the operator. 
+                    if (token.value == "-" or token.value == "+") and (not previousToken or
+                                                                       (previousToken.type == "OP" or
+                                                                        previousToken.type == "LPAREN")):
+                        # NOTE: Kind of a hack, for the unary I just double the operator.
                         currentOp = symbols[token.value*2]
                     else:
                         currentOp = symbols[token.value]
@@ -188,9 +193,9 @@ class MathPlugin(PlushiePlugin):
                             break
                         prevOp = symbols[seVal]
                         if (currentOp.side == "left" and prevOp.precidence == currentOp.precidence or
-                            currentOp.precidence < prevOp.precidence):
-                            output.append(stack.pop().value)
-                            stackEnd = stack[-1:]
+                           currentOp.precidence < prevOp.precidence):
+                                output.append(stack.pop().value)
+                                stackEnd = stack[-1:]
                         else:
                             break
                     # Recreate token for unary - (messy, but it works)
@@ -236,7 +241,7 @@ class MathPlugin(PlushiePlugin):
             ('BINNUM', r'0b[0-1]*'),
             ('HEXNUM', r'0x[0-9a-fA-F]*'),
             ('NUMBER', r'\d+(\.\d*)?'),
-            ('OP',     r'(\>{2}|\<{2}|[\+\/\-\^\%\!\*\&\|\~])'), # TODO: Generate this using the symbols that are ops
+            ('OP',     r'(\>{2}|\<{2}|[\+\/\-\^\%\!\*\&\|\~])'),  # TODO: Generate this using the symbols that are ops
             ('NOOP',   r'[ \t]'),
             ('FUNC',   r'[A-Za-z]+[A-Za-z0-9]?'),
             ('SEP',    r','),
@@ -281,7 +286,8 @@ class MathPlugin(PlushiePlugin):
                     except ZeroDivisionError:
                         raise RuntimeError("Cannot divide by zero!")
                     except ValueError:
-                        raise RuntimeError("Resulting value is no longer calculable by PlushieBot (either imaginary, undefined, or an edge case).")
+                        raise RuntimeError("Resulting value is no longer calculable by PlushieBot (either imaginary, "
+                                           "undefined, or an edge case).")
                     stack.append(result)
                 else:
                     raise RuntimeError("Unknown function or operator {:s}".format(token))

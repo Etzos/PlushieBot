@@ -6,7 +6,6 @@ import traceback
 
 class PluginManager:
 
-
     class CommandContext:
         def __init__(self, parent, message_sender):
             self.chat = message_sender
@@ -18,7 +17,6 @@ class PluginManager:
             if target:
                 prefix = "/msg " + target + " "
             self.chat.put(('chat', prefix + message))
-
 
     def __init__(self, config, message_sender):
         self.config = config
@@ -62,7 +60,7 @@ class PluginManager:
                 parts = self.transforms[cmd].split(" ")
                 cmd = parts[0]
                 # This is some nasty joojoo; the Message gets hot-modified here
-                parts.extend(message.msgArg()[1:]) # For now only 1->many transforms are allowed
+                parts.extend(message.msgArg()[1:])  # For now only 1->many transforms are allowed
                 message.msg = "!" + " ".join(parts)
             if cmd in self.commands:
                 try:

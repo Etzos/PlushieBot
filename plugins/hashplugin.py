@@ -5,8 +5,7 @@ import hashlib
 
 class HashPlugin(PlushiePlugin):
     name = "Hashing Plugin"
-    description = """Turn a string into it's hashed value.
-        (Supports SHA1 and MD5)"""
+    description = "Turn a string into it's hashed value. (Supports SHA1 and MD5)"
     authors = ["Garth"]
 
     @plushieCmd("hash")
@@ -27,11 +26,8 @@ class HashPlugin(PlushiePlugin):
         remains = " ".join(args[1:])
 
         if hashtype == "md5":
-            ctx.msg("MD5 sum: " +
-                     hashlib.md5(bytes(remains, 'ascii')).hexdigest(), msg.replyTo)
+            ctx.msg("MD5 sum: " + hashlib.md5(bytes(remains, 'ascii')).hexdigest(), msg.replyTo)
         elif hashtype == "sha1":
-            ctx.msg("SHA1 sum: " +
-                     hashlib.sha1(bytes(remains, 'ascii')).hexdigest(), msg.replyTo)
+            ctx.msg("SHA1 sum: " + hashlib.sha1(bytes(remains, 'ascii')).hexdigest(), msg.replyTo)
         else:
-            ctx.msg("I'm sorry, I don't know the hashing algorithm " +
-                     "'" + hashtype + "'", msg.replyTo)
+            ctx.msg("I'm sorry, I don't know the hashing algorithm '" + hashtype + "'", msg.replyTo)

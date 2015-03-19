@@ -13,9 +13,9 @@ class LastSeenPlugin(PlushiePlugin):
         self.db = sqlite3.connect("chat.db", detect_types=sqlite3.PARSE_COLNAMES)
 
     @plushieCmd("lastsaid")
-    @commandDoc(extra="<player> [<number>]", 
-                doc="Returns <player>'s message from <number> messages ago. " +
-                "Without <number>, defaults to last message they have said")
+    @commandDoc(extra="<player> [<number>]",
+                doc="Returns <player>'s message from <number> messages ago. Without <number>, defaults to last "
+                "message they have said")
     def run(self, ctx, msg):
         args = msg.getArgs()
         argsLen = len(args)
@@ -50,7 +50,8 @@ class LastSeenPlugin(PlushiePlugin):
 
         said = self.getLastMessage(target, howMany)
         if not said:
-            ctx.msg("I haven't seen {:s} say anything{:s}.".format(args[0], "" if howMany < 2 else " that far back"), msg.replyTo)
+            ctx.msg("I haven't seen {:s} say anything{:s}.".format(args[0], "" if howMany < 2 else " that far back"),
+                    msg.replyTo)
             return
 
         saiddate = said[4]

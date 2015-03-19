@@ -14,5 +14,4 @@ class GreetPlugin(PlushiePlugin):
         if target[0] == "":
             ctx.msg("I don't know who to greet.", msg.replyTo)
         else:
-            ctx.msg("Yay! " + target[0] + " is here! \\ :O /" +
-                     " Hi " + target[0] + "!")
+            ctx.msg("Yay! " + target[0] + " is here! \\ :O / Hi " + target[0] + "!")

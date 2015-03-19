@@ -14,10 +14,12 @@ class StatPlugin(PlushiePlugin):
     @plushieCmd("stats", "stat", transforms={"toplines": "stats toplines"})
     @commandDoc(doc="Has Plushie return various stats about chat lines")
     @commandDoc(cmd="lines", extra="<player>", doc="Returns how many lines Plushie has seen <player> say")
-    @commandDoc(cmd="toplines", doc="Returns the top 5 players who have spoken the most and the amount of lines they have said")
+    @commandDoc(cmd="toplines",
+                doc="Returns the top 5 players who have spoken the most and the amount of lines they have said")
     @commandDoc(cmd="totallines", doc="Returns how many lines Plushie has seen in total")
     @commandDoc(cmd="linerank", extra="[player]", doc="Returns the rank and how many lines you or (player) has said")
-    @commandDoc(cmd="rank", extra="<number>", doc="Returns the player and the amount of lines they have said at rank <number>")
+    @commandDoc(cmd="rank", extra="<number>",
+                doc="Returns the player and the amount of lines they have said at rank <number>")
     def delegate(self, ctx, msg):
         args = msg.getArgs()
         arglen = len(args)
@@ -34,7 +36,8 @@ class StatPlugin(PlushiePlugin):
             if amount == 0:
                 reply = "I haven't seen {:s} say anything.".format(args[1])
             else:
-                reply = "I have seen {:s} say {:d} line{:s} in chat.".format(args[1], amount, "" if amount == 1 else "s")
+                reply = "I have seen {:s} say {:d} line{:s} in chat.".format(args[1], amount,
+                                                                             "" if amount == 1 else "s")
             ctx.msg(reply, msg.replyTo)
         elif args[0].lower() == "toplines":
             lines = self.getTopLines()
@@ -57,11 +60,9 @@ class StatPlugin(PlushiePlugin):
             if not rank:
                 ctx.msg("I haven't seen {:s} say anything.".format(rankToGet), msg.replyTo)
                 return
-            ctx.msg("{:s} the #{:d} most talkative player with {:d} lines.".format(
-                "You are" if rankToGet == msg.player else "{:s} is".format(rankToGet),
-                rank[0],
-                rank[1]),
-            msg.replyTo)
+            ctx.msg("{:s} the #{:d} most talkative player with {:d} lines."
+                    .format("You are" if rankToGet == msg.player else "{:s} is".format(rankToGet), rank[0], rank[1]),
+                    msg.replyTo)
         elif args[0].lower() == "rank":
             if arglen < 2:
                 ctx.msg("You must supply a number to the rank subcommand.", msg.replyTo)
@@ -76,9 +77,10 @@ class StatPlugin(PlushiePlugin):
                 return
             rank = self.getPlayerAtRank(toGet)
             if not rank:
-                ctx.msg("I don't know anyone at rank #{:d}.".format(toGet), msg.replyTo);
+                ctx.msg("I don't know anyone at rank #{:d}.".format(toGet), msg.replyTo)
                 return
-            ctx.msg("The player at rank #{:d} for the most chat lines is {:s} [{:d}].".format(toGet, rank[0], rank[1]), msg.replyTo)
+            ctx.msg("The player at rank #{:d} for the most chat lines is {:s} [{:d}].".format(toGet, rank[0], rank[1]),
+                    msg.replyTo)
         else:
             ctx.msg("Sorry, I don't recognize the '{:s}' sub-command.".format(args[0]), msg.replyTo)
 
@@ -122,7 +124,7 @@ class StatPlugin(PlushiePlugin):
         elif not rows[1]:
             return None
         else:
-            return (rows[0]+1, rows[1]) # Add 1 because rank is number of people above plus one (yourself)
+            return (rows[0]+1, rows[1])  # Add 1 because rank is number of people above plus one (yourself)
 
     def getPlayerAtRank(self, rank):
         res = self.db.execute("""

@@ -1,5 +1,6 @@
 from .plugin import *
 
+
 class ListPlugin(PlushiePlugin):
     name = "List Plugins"
     description = "Lists all the available commands"

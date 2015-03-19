@@ -11,7 +11,4 @@ class TimePlugin(PlushiePlugin):
     @plushieCmd("time")
     @commandDoc(doc="Returns the date and time(EST)")
     def run(self, ctx, msg):
-        ctx.msg("It is " +
-                 time.strftime("%A, %d %B %Y %I:%M:%S %p (%Z)",
-                               time.localtime()),
-                 msg.replyTo)
+        ctx.msg("It is " + time.strftime("%A, %d %B %Y %I:%M:%S %p (%Z)", time.localtime()), msg.replyTo)

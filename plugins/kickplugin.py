@@ -19,5 +19,4 @@ class KickPlugin(PlushiePlugin):
         elif rand > 8:
             ctx.msg("/me kicks " + target[0] + " -- Ouch!")
         else:
-            ctx.msg("/me kicks " + target[0] +
-                     " -- A softer kick than expected")
+            ctx.msg("/me kicks " + target[0] + " -- A softer kick than expected")

@@ -17,9 +17,11 @@ smileyNums = {
     "36": "/.O", "37": "d.b", "38": ">.>", "39": "=^_^="
 }
 
+
 def linkReplaceFunc(m):
     link = m.group(1)
     return link
+
 
 def htmlEntityReplaceFunc(m):
     part = m.group(1)
@@ -34,6 +36,7 @@ def htmlEntityReplaceFunc(m):
     else:
         return part
 
+
 def smileyReplaceFunc(m):
     num = m.group(1)
     if num in smileyNums:
@@ -42,6 +45,7 @@ def smileyReplaceFunc(m):
         print(num)
     return ""
 
+
 class Message:
 
     def __init__(self, msg):
@@ -49,8 +53,8 @@ class Message:
         self.raw = msg
         self.player = None
         self.msg = None
-        self.whisper = 1 # 1 = normal message, 0 = whisper from player, -1 = whisper from me
-        self.isWhisper = False # This is True if a whisper from someone false in all other cases
+        self.whisper = 1  # 1 = normal message, 0 = whisper from player, -1 = whisper from me
+        self.isWhisper = False  # This is True if a whisper from someone false in all other cases
         self.replyTo = None
         self.type = None
         self.time = None
@@ -77,7 +81,7 @@ class Message:
         cleanMsg = entityRepl.sub(htmlEntityReplaceFunc, partsdict["message"])
         self.player = partsdict["player"].replace(" ", "_")
         self.msg = cleanMsg
-        self.time = None # TODO: Set receive time here!
+        self.time = None  # TODO: Set receive time here!
         if partsdict["whisper"]:
             if partsdict["whisper"] == "from":
                 self.whisper = 0
@@ -88,7 +92,7 @@ class Message:
 
     def msgArg(self):
         # Note: This also removes extra spaces and tabs
-        return list(filter(lambda x : x and not x.isspace(), self.msg.split(" ")))
+        return list(filter(lambda x: x and not x.isspace(), self.msg.split(" ")))
 
     def isCommand(self, prefix="!"):
         # TODO: This should probably be a little more advanced, like check for symbols after

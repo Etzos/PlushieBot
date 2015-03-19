@@ -1,7 +1,6 @@
 import time
 import queue
 
-#from lib import Profile, ChatLib, ChatOnline
 
 def run_network(config, inputs, outputs, args):
     # Ugly! But it should work
@@ -38,10 +37,10 @@ def run_network(config, inputs, outputs, args):
     # This loop was basically copied from plushiecode.py
     current_time = time.time()
     previous_time = current_time
-    wait_time = 4 if not args['debug'] else 1 # in seconds
-    current_wait_time = wait_time   # Amount of time to wait between polls
+    wait_time = 4 if not args['debug'] else 1  # in seconds
+    current_wait_time = wait_time  # Amount of time to wait between polls
     iterations = 0  # The number of iterations gone through for polling (used for deciding when to poll online list)
-    bad_polls = 0   # Number of times polling the server failed (used to calculate current_wait_time)
+    bad_polls = 0  # Number of times polling the server failed (used to calculate current_wait_time)
     while True:
         current_time = time.time()
         timediff = current_time - previous_time

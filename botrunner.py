@@ -6,6 +6,7 @@ be run outside of the loop.
 """
 import json
 
+
 def loadConfig(name="config.json"):
     conf = open(name, "r")
     return json.loads(conf.read())
@@ -39,8 +40,8 @@ if __name__ == "__main__":
     # Messages should be as follows:
     # ('type', 'message')
     # Where 'type' will be one of: 'system', 'chat' and 'message' will be the message to be used
-    net_in = Queue() # Messages to send to NEaB
-    net_out = Queue() # Messages from NEaB
+    net_in = Queue()   # Messages to send to NEaB
+    net_out = Queue()  # Messages from NEaB
 
     network_process = Process(target=run_network, args=(config, net_in, net_out, subargs))
     plushie_process = Process(target=run_plushie, args=(config, net_in, net_out))
