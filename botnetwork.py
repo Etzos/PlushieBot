@@ -26,7 +26,7 @@ def run_network(config, inputs, outputs, args):
     # TODO: REFACTOR
     try:
         # Bring the last message up to date
-        throwaway = c.getRawMessages()
+        c.getRawMessages()
         # Put self in online list
         o.poll(0)
     except:
