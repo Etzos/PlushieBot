@@ -51,36 +51,25 @@ class KarmaPlugin(PlushiePlugin):
         name = msg.getCmd()
 
         if num < 1:
-            ctx.msg("{:s}: Your {:s} is {:d}.".format(
-                    player,
-                     name,
-                     self.getKarma(player)
-                    ), msg.replyTo)
+            ctx.msg("{:s}: Your {:s} is {:d}.".format(player, name, self.getKarma(player)), msg.replyTo)
         elif num == 1:
             if bodyParts[0] == "increase":
                 postStr = "The items with the most increases are: "
                 for r in self.most("increase", 5):
-                    postStr += r[0] + ": (" + str(r[3]) + ") [+" + \
-                        str(r[1]) + " / -" + str(r[2]) + "], "
+                    postStr += "{:s}: ({:d}) [+{:d} / -{:d}], ".format(r[0], r[3], r[1], r[2])
                 ctx.msg(postStr, msg.replyTo)
             elif bodyParts[0] == "decrease":
                 postStr = "The items with the most decreases are: "
                 for r in self.most("decrease", 5):
-                    postStr += r[0] + ": (" + str(r[3]) + ") [+" + \
-                        str(r[1]) + " / -" + str(r[2]) + "], "
+                    postStr += "{:s}: ({:d}) [+{:d} / -{:d}], ".format(r[0], r[3], r[1], r[2])
                 ctx.msg(postStr, msg.replyTo)
             elif bodyParts[0] == "most":
                 postStr = "The items with the most {:s} are: ".format(name)
                 for r in self.most("most", 5):
-                    postStr += r[0] + ": (" + str(r[3]) + ") [+" + \
-                        str(r[1]) + " / -" + str(r[2]) + "], "
+                    postStr += "{:s}: ({:d}) [+{:d} / -{:d}], ".format(r[0], r[3], r[1], r[2])
                 ctx.msg(postStr, msg.replyTo)
             else:
-                ctx.msg("{:s}: Your {:s} is {:d}.".format(
-                    player,
-                     name,
-                     self.getKarma(player)
-                    ), msg.replyTo)
+                ctx.msg("{:s}: Your {:s} is {:d}.".format(player, name, self.getKarma(player)), msg.replyTo)
         elif bodyParts[0] == "++" or bodyParts[0] == "add":
             if msg.isWhisper:
                 ctx.msg("Privately changing {:s} isn't allowed.".format(name), player)
@@ -156,8 +145,8 @@ class KarmaPlugin(PlushiePlugin):
         res = self.db.execute("""SELECT item, added, subtracted,
                                         added-subtracted
                                  FROM karma
-                                 ORDER BY {:s} DESC
-                                 LIMIT {:s}""".format(orderby, limit))
+                                 ORDER BY ? DESC
+                                 LIMIT ?""", (orderby, limit,))
         return res.fetchall()
 
     def addHistory(self, player, target, add=True):

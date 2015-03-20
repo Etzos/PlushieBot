@@ -15,5 +15,4 @@ class MumblePlugin(PlushiePlugin):
             PASSWORD: oloc_CEita
             USERNAME: <whatever you want, I recommend your NEaB username>]
             In order to speak be sure to join one of the sub-channels.""",
-            msg.replyTo);
- 
+                msg.replyTo)

@@ -1,4 +1,8 @@
-import sys, os, tty, termios
+import os
+import sys
+import termios
+import tty
+
 
 class TermUtil:
     @staticmethod
@@ -18,13 +22,13 @@ class TermUtil:
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, old)
 
-        return tuple([int(i) for i in existing[2:].split(';') ])
+        return tuple([int(i) for i in existing[2:].split(';')])
 
     @staticmethod
     def getLine(stdin=sys.stdin):
         fd = stdin.fileno()
         old = termios.tcgetattr(fd)
-        
+
         line = ""
         try:
             tty.setraw(fd)

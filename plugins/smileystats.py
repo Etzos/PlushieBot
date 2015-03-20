@@ -9,7 +9,7 @@ class SmileyStatsPlugin(PlushiePlugin):
     name = "Smiley Statistics"
     description = "Saves info on the number of smilies players have used and give access to these stats"
     authors = ["Garth"]
-    
+
     def __init__(self):
         dbfile = "smileycounter.db"
         firstStart = not os.path.isfile(dbfile)
@@ -33,9 +33,9 @@ class SmileyStatsPlugin(PlushiePlugin):
             self.db.commit()
 
     @plushieCmd("smileycount")
-    @commandDoc(extra="[<smiley>|all [<player>|everyone]]", 
-                doc="Has Plushie return various stats about queried smileys and/or players. " + 
-                    "Using \"all\" returns the sum of all the smileys used. " + 
+    @commandDoc(extra="[<smiley>|all [<player>|everyone]]",
+                doc="Has Plushie return various stats about queried smileys and/or players. "
+                    "Using \"all\" returns the sum of all the smileys used. "
                     "Using \"everyone\" returns the smiley query, but summing everyone together")
     def smileyCount(self, ctx, msg):
         bodyParts = msg.getArgs()
@@ -58,7 +58,7 @@ class SmileyStatsPlugin(PlushiePlugin):
                 amt = 0
             else:
                 amt = res[0]
-            
+
             ctx.msg("{:s} has used a total of {:d} smileys.".format(speaker, amt), msg.replyTo)
             return
         if num == 2 and smiley.lower() == "all" and speaker.lower() != "everyone":
@@ -68,7 +68,7 @@ class SmileyStatsPlugin(PlushiePlugin):
                 amt = 0
             else:
                 amt = res[0]
-            
+
             ctx.msg("{:s} has used a total of {:d} smileys.".format(speaker, amt), msg.replyTo)
             return
         if num == 2 and smiley.lower() == "all" and speaker.lower() == "everyone":
@@ -78,12 +78,12 @@ class SmileyStatsPlugin(PlushiePlugin):
                 amt = 0
             else:
                 amt = res[0]
-            
+
             ctx.msg("I have seen a total of {:d} smileys used in chat.".format(amt), msg.replyTo)
             return
-            
+
         smileyID = self.getSmileyId(smiley)
-        
+
         if not smileyID:
             ctx.msg("{:s} is not a known smiley.".format(smiley), msg.replyTo)
             return
@@ -94,12 +94,12 @@ class SmileyStatsPlugin(PlushiePlugin):
                 amt = 0
             else:
                 amt = res[0]
-            
+
             ctx.msg("I have seen everyone use the {:s} smiley {:d} times.".format(smiley, amt), msg.replyTo)
             return
-        
-        #print("Get: {:d}".format(smileyID))
-        query = self.db.execute("SELECT count FROM SmileyCount WHERE speaker = ? AND smiley = ?", (speaker.lower(), smileyID))
+
+        query = self.db.execute("SELECT count FROM SmileyCount WHERE speaker = ? AND smiley = ?", (speaker.lower(),
+                                                                                                   smileyID))
         res = query.fetchone()
         if not res:
             amt = 0
@@ -123,11 +123,12 @@ class SmileyStatsPlugin(PlushiePlugin):
             smileyID = self.getSmileyId(smiley, True)
             if not smileyID:
                 return
-            #print("Set: {:d}".format(smileyID))
             # Force the (player, smiley) tuple to exist
             self.db.execute("INSERT INTO SmileyCount (speaker, smiley) VALUES (?, ?)", (playerNorm, smileyID))
             # Update existing value
-            q = self.db.execute("UPDATE SmileyCount SET count=count+? WHERE speaker = ? AND smiley = ?", (amt, playerNorm, smileyID))
+            q = self.db.execute("UPDATE SmileyCount SET count=count+? WHERE speaker = ? AND smiley = ?", (amt,
+                                                                                                          playerNorm,
+                                                                                                          smileyID))
             self.db.commit()
 
     def getSmileyId(self, smiley, insertNew=False):

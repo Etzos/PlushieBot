@@ -1,4 +1,4 @@
 @ECHO off
-START "" "plushieprocess.py"
+START "" "botrunner.py" --debug
 cd loop
 START "" "testconsole.py"

@@ -12,7 +12,6 @@ class WerewolfPlugin(PlushiePlugin):
     description = "Play a game of werewolf (aka Mafia or Vampire)"
     authors = ["Garth"]
 
-
     class Player:
         def __init__(self, name):
             self.name = name
@@ -39,14 +38,14 @@ class WerewolfPlugin(PlushiePlugin):
             self.startTime = 180
 
     def __init__(self):
-        self.gamestarted = False                # Whether a game has started or not
-        self.players = []                       # Holds the player objects
-        self.turn = 0                           # The current turn (changes every day/night cycle)
-        self.turnChange = datetime.now()        # The datetime when the turn has changed 
-        self.isDay = False                      # False when night, True when day (start with night so doPhase() works on start)
+        self.gamestarted = False          # Whether a game has started or not
+        self.players = []                 # Holds the player objects
+        self.turn = 0                     # The current turn (changes every day/night cycle)
+        self.turnChange = datetime.now()  # The datetime when the turn has changed
+        self.isDay = False                # False when night, True when day (start at night so doPhase() works on start)
         # Settings
-        self.quorum = 5                         # Minimum number of players
-        self.phaseTime = 90                     # Length of each phase (in seconds)
+        self.quorum = 5                   # Minimum number of players
+        self.phaseTime = 90               # Length of each phase (in seconds)
         self.startTime = 180
 
     @plushieCmd("start")
@@ -61,7 +60,8 @@ class WerewolfPlugin(PlushiePlugin):
             return
 
         if any(p for p in self.players if p.name == msg.player):
-            ctx.msg("{:s}: You cannot join a game you are already in. ({:s} until game start)".format(msg.player, self.timeRemainMessage()))
+            ctx.msg("{:s}: You cannot join a game you are already in. ({:s} until game start)"
+                    .format(msg.player, self.timeRemainMessage()))
             return
 
         # Waiting for quorum
@@ -74,7 +74,7 @@ class WerewolfPlugin(PlushiePlugin):
                         ({:s} until start)""".format(self.timeRemainMessage()))
             ctx.msg(self.quorumMessage())
             ctx.msg("For the instructions/rules use !gamerules", msg.player)
-        elif self.gamestarted and self.turn < 1: # Still in joining phase
+        elif self.gamestarted and self.turn < 1:  # Still in joining phase
             leftTime = self.timeRemainMessage()
             self.players.append(self.Player(msg.player))
             ctx.msg("""You have joined the current game of werewolf!
@@ -85,7 +85,6 @@ class WerewolfPlugin(PlushiePlugin):
             ctx.msg("For the full game instructions/rules use !gamerules", msg.player)
         else:
             ctx.msg("A game of werewolf is already in progress. Please wait for the next game to join")
-
 
     @plushieCmd("vote")
     @commandDoc(extra="<player>", doc="Votes for <player> in Werewolf game")
@@ -132,7 +131,6 @@ class WerewolfPlugin(PlushiePlugin):
         playerObj.vote(args[0], self.turn)
         ctx.msg("You have voted for {:s} as a {:s}.".format(args[0], playerObj.role), msg.player)
 
-
     @plushieCmd("role")
     @commandDoc(doc="Returns whether you are a villager or a werewolf in the Werewolf game")
     def roleCmd(self, ctx, msg):
@@ -154,7 +152,6 @@ class WerewolfPlugin(PlushiePlugin):
         else:
             ctx.msg("Your role is " + playerObj[0].role + ".", msg.player)
 
-
     @plushieCmd("players")
     @commandDoc(doc="Returns the players and whether they are alive in the Werewolf game")
     def playersCmd(self, ctx, msg):
@@ -164,12 +161,13 @@ class WerewolfPlugin(PlushiePlugin):
             return
 
         if self.turn < 1:
-            ctx.msg("Players waiting for game to begin: {:s}".format(", ".join(p.name for p in self.players)), msg.replyTo)
+            ctx.msg("Players waiting for game to begin: {:s}".format(", ".join(p.name for p in self.players)),
+                    msg.replyTo)
         else:
-            ctx.msg("Players in game: {:s}".format(
-                    ", ".join((p.name if p.state == "alive" else "{:s} [{:s}]".format(p.name, p.state)) for p in self.players),),
-                msg.replyTo)
-
+            ctx.msg("Players in game: {:s}"
+                    .format(", ".join((p.name if p.state == "alive" else "{:s} [{:s}]".format(p.name, p.state))
+                                      for p in self.players)),
+                    msg.replyTo)
 
     @plushieCmd("gamestat")
     @commandDoc(doc="Returns how many seconds until the next phase of the Werewolf game")
@@ -182,21 +180,19 @@ class WerewolfPlugin(PlushiePlugin):
         if self.turn < 1:
             ctx.msg("There are {:s} until the game starts.".format(self.timeRemainMessage()), msg.replyTo)
         else:
-            ctx.msg("There are {:s} until the next phase change. {:s}".format(self.timeRemainMessage(), self.phaseMessage(False)),
+            ctx.msg("There are {:s} until the next phase change. {:s}".format(self.timeRemainMessage(),
+                                                                              self.phaseMessage(False)),
                     msg.replyTo)
-
 
     @plushieCmd("forceturn")
     @commandDoc(doc="Currently is just a place holder command")
     def forceTurn(self, ctx, msg):
         ctx.msg("Blah")
 
-
     @plushieCmd("gamerules")
     @commandDoc(doc="Returns the game rules for the Werewolf game")
     def gamerulesCmd(self, ctx, msg):
         ctx.msg(self.instructionsMessage(), msg.player)
-
 
     @plushieTick()
     def tick(self, ctx):
@@ -295,7 +291,8 @@ class WerewolfPlugin(PlushiePlugin):
             # NOTE: If the current phase is day, then the next phase will be night.
             #       With only two players, that means that werewolves win.
             if self.isDay and len(self.players) == 2:
-                ctx.msg("There is only one villager and one werewolf left, and night is about to fall. The villagers are doomed!")
+                ctx.msg("There is only one villager and one werewolf left, and night is about to fall. The villagers "
+                        "are doomed!")
                 for p in self.players:
                     if p.role == "village" and p.state == "alive":
                         p.state = "dead"
@@ -318,7 +315,7 @@ class WerewolfPlugin(PlushiePlugin):
                 ctx.msg("You have been eliminated from the game. Sorry.", pl[0].name)
                 ctx.msg("{:s} has been eliminated by the {:s}! {:s}".format(
                         pl[0].name, "villagers" if self.isDay else "werewolves",
-                         " Quit: " + ", ".join(oldPlayers) if len(oldPlayers) > 0 else ""))
+                        " Quit: " + ", ".join(oldPlayers) if len(oldPlayers) > 0 else ""))
 
         if self.isDay:
             self.isDay = False
@@ -337,7 +334,7 @@ class WerewolfPlugin(PlushiePlugin):
         diff = self.quorum - num
         if diff == 0:
             return "Quorum of " + str(num) + " players reached!"
-        elif diff == self.quorum-1: # Handle the singular
+        elif diff == self.quorum-1:  # Handle the singular
             return "There is currently 1 player. Need {:d} more for quorum.".format(diff)
         elif diff > 0:
             return "There are currently {:d} players. Need {:d} more for quorum.".format(num, diff)
@@ -364,14 +361,23 @@ class WerewolfPlugin(PlushiePlugin):
         return "{:d} seconds remaining".format(time - diff.total_seconds())
 
     def instructionsMessage(self):
-        return """You have decided to join a game of Werewolf (if not, do it now use `!start`). If you don't know how to play, the rules will be explained here.
-                   The rules are pretty simple:
-                   There are two groups that will be chosen randomly when the game starts, the villagers and the werewolves.
-                   Only the werewolves know who the other werewolves are. Villagers don't know who is a werewolf and who is a villager.
-                   VILLAGERS can only vote during the day and their task is to eliminate all of the werewolves.
-                   WEREWOLVES get to act during the day and night. During the day, they act like a villager and pick someone to eliminate.
-                   However, at night they get to vote again to choose a villager to eliminate.
-                   GAMEPLAY: The game starts on turn 1 day. Everyone (villagers and werewolves) vote to eliminate a player. After 90 seconds The votes are tallied
-                   The player with the most votes is eliminated (or if there is a tie, the game will decide who to eliminate), and it changes from turn 1 day to
-                   turn 1 night. During the night phase, only werewolves can vote. The same voting mechanics apply as during the day and gameplay continues with turn 2 day.
-                   WINNING: For villagers to win, all werewolves must be eliminated. For werewolves to win, there must be fewer villagers than werewolves."""
+        return """
+        You have decided to join a game of Werewolf (if not, do it now use `!start`). If you don't know how to play, the
+        rules will be explained here.
+        The rules are pretty simple:
+        There are two groups that will be chosen randomly when the game starts, the villagers and the werewolves.
+        Only the werewolves know who the other werewolves are. Villagers don't know who is a werewolf and who is a
+        villager.
+        VILLAGERS can only vote during the day and their task is to eliminate all of the werewolves.
+        WEREWOLVES get to act during the day and night. During the day, they act like a villager and pick someone to
+        eliminate.
+        However, at night they get to vote again to choose a villager to eliminate.
+        GAMEPLAY: The game starts on turn 1 day. Everyone (villagers and werewolves) vote to eliminate a player. After
+        90 seconds The votes are tallied
+        The player with the most votes is eliminated (or if there is a tie, the game will decide who to eliminate), and
+        it changes from turn 1 day to
+        turn 1 night. During the night phase, only werewolves can vote. The same voting mechanics apply as during the
+        day and gameplay continues with turn 2 day.
+        WINNING: For villagers to win, all werewolves must be eliminated. For werewolves to win, there must be fewer
+        villagers than werewolves.
+        """
