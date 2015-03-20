@@ -1,4 +1,4 @@
-from .plugin import *
+from .plugin import PlushiePlugin, plushieCmd, commandDoc, plushieMsg
 from message import smileyNums
 
 import sqlite3
@@ -126,9 +126,9 @@ class SmileyStatsPlugin(PlushiePlugin):
             # Force the (player, smiley) tuple to exist
             self.db.execute("INSERT INTO SmileyCount (speaker, smiley) VALUES (?, ?)", (playerNorm, smileyID))
             # Update existing value
-            q = self.db.execute("UPDATE SmileyCount SET count=count+? WHERE speaker = ? AND smiley = ?", (amt,
-                                                                                                          playerNorm,
-                                                                                                          smileyID))
+            self.db.execute("UPDATE SmileyCount SET count=count+? WHERE speaker = ? AND smiley = ?", (amt,
+                                                                                                      playerNorm,
+                                                                                                      smileyID))
             self.db.commit()
 
     def getSmileyId(self, smiley, insertNew=False):

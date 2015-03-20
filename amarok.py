@@ -3,7 +3,6 @@ import dbus
 
 class MprisPlaying:
     def __init__(self):
-        stop = False
         self.artist = self.title = self.album = self.status = None
         self.metadata = self.playbackstatus = None
         self.bus = dbus.SessionBus()
