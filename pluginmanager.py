@@ -1,7 +1,9 @@
-# TODO: Wrap the tick and message methods in try/except clauses to prevent killing the thread
-# TODO: When that's done, remember to disable the plugin, so it doesn't cause any more trouble
-from importlib import import_module
+import fnmatch
+import importlib
+import os
 import traceback
+
+from plugins.plugin import PlushiePlugin
 
 
 class PluginManager:
@@ -28,6 +30,11 @@ class PluginManager:
         self.ctx = self.CommandContext(self, message_sender)
 
     def registerPlugin(self, plugin):
+        """Officially registers a plugin instance with the plugin manager.
+
+        Args:
+            plugin (PlushiePlugin): Plugin instance to register.
+        """
         self.plugins[plugin.name] = plugin
         for cmd in plugin.getCommands():
             names = getattr(cmd, "plushieCommand")
@@ -40,16 +47,65 @@ class PluginManager:
         for handle in plugin.getMessageHandlers():
             self.msghandlers.append(handle)
 
+    def unregister_plugin(self, plugin):
+        """Officially unregisters a plugin instance from the plugin manager."""
+        for cmd in plugin.getCommands():
+            for command_name in getattr(cmd, "plushieCommand"):
+                del self.commands[command_name]
+            for k, v in getattr(cmd, "commandTransforms"):
+                del self.transforms[k]
+        for tick in plugin.getTick():
+            self.tick.remove(tick)
+        for handle in plugin.getMessageHandlers():
+            self.msghandlers.remove(handle)
+        del self.plugins[plugin.name]
+
     def registerPluginsFromList(self, pluginList, baseModule="plugins"):
+        """Registers a plugin given a list of plugins."""
         for plug in pluginList:
             self.registerPluginFromString(plug, baseModule)
 
     def registerPluginFromString(self, pluginName, baseModule="plugins"):
-        # TODO: Check to make sure that there is a "." in the string
+        """Registers a plugin given a string."""
         path, className = pluginName.rsplit(".", 1)
-        mod = import_module("{:s}.{:s}".format(baseModule, path))
+        mod = importlib.import_module("{:s}.{:s}".format(baseModule, path))
         cls = getattr(mod, className)
         self.registerPlugin(cls())
+
+    def load_plugins(self, blacklist=[]):
+        """Loads plugins from the :mod:`plugins` submodule automatically.
+
+        Loads all plugins from the :mod:`plugins` submodule automatically while ignoring classes included in the
+        blacklist arg.
+
+        KWargs:
+            blacklist (str[]): List of plugin classes to ignore.
+        """
+        # Search the plugins directory for names matching *?plugin.py (anything in front with at least one character)
+        plugins = fnmatch.filter(os.listdir("./plugins"), "*?plugin.py")
+        for plugin in map(lambda n: n.split(".")[0], plugins):
+            if plugin in blacklist:
+                continue
+            # This is a bit hacky since I don't maintain a reference
+            importlib.import_module("plugins.{!s}".format(plugin))
+        # Now that all the relavant modules have been imported, grab the plugin classes
+        for plugin_class in PlushiePlugin.__subclasses__():
+            print(plugin_class)
+            self.registerPlugin(plugin_class())
+
+    def reload_plugin(self, plugin_name):
+        """Reloads an existing plugin using the name of the plugin class."""
+        try:
+            plugin = self.plugins[plugin_name]
+        except:
+            return False
+        class_name = plugin.__class__.__name__
+        mod = importlib.import_module(plugin.__class__.__module__)
+        self.unregister_plugin(plugin)
+        newmod = importlib.reload(mod)
+        cls = getattr(newmod, class_name)
+        self.registerPlugin(cls())
+        return True
 
     def signalCommand(self, message):
         if message.isCommand():
