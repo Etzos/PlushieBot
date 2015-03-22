@@ -4,7 +4,7 @@ A library designed to simulate the NEaB chat lib (while providing debugging tool
 @author: Garth
 """
 from .writer import read_log, write_log, full_message
-from ..message import Message
+from message import Message
 
 
 class Profile:
