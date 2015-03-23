@@ -351,7 +351,7 @@ class WerewolfPlugin(PlushiePlugin):
     def timeRemainMessage(self):
         diff = datetime.now() - self.turnChange
         time = self.phaseTime if self.gameBegun() else self.startTime
-        return "{:d} seconds remaining".format(time - diff.total_seconds())
+        return "{:.0f} seconds remaining".format(time - diff.total_seconds())
 
     def instructionsMessage(self):
         return """
