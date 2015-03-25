@@ -1,5 +1,9 @@
 # PlushieBot
 
+[![Travis](https://img.shields.io/travis/Etzos/PlushieBot.svg)](https://travis-ci.org/Etzos/PlushieBot)
+[![Coveralls](https://img.shields.io/coveralls/Etzos/PlushieBot.svg)](https://coveralls.io/r/Etzos/PlushieBot)
+
+
 ## Running
 
 In order to run PlushieBot for yourself you'll need to modify a few things
