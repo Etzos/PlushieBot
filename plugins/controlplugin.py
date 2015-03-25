@@ -7,6 +7,7 @@ class ControlPlugin(PlushiePlugin):
     authors = ["Garth"]
 
     @plushieCmd("reload")
+    @commandDoc(doc="Reload a plugin", extra="<Plugin Name>")
     def control(self, ctx, msg):
         if msg.player != "Garth":
             ctx.msg("{:s}: You do not have permission to reload plugins.".format(msg.player), msg.replyTo)
