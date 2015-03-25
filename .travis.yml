@@ -1,10 +1,10 @@
 language: python
 python:
     - "3.4"
-    - "pypy3"
+#    - "pypy3"  # PlushieBot requires at least Python 3.4, which is currently not supported by PyPy
 env:
     - TOX_ENV=py34
-    - TOX_ENV=pypy3
+#    - TOX_ENV=pypy3
     - TOX_ENV=flake8
 install:
     - pip install tox
