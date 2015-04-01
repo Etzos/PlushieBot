@@ -49,7 +49,7 @@ def run_network(config, inputs, outputs, args):
             previous_time = current_time
             try:
                 msgs = c.getRawMessageList()
-                if iterations > 1:
+                if iterations > 3: #  Online poll should be 16 seconds (i.e. 4 normal polls)
                     iterations = 0
                     o.poll(0)
                 else:
@@ -59,8 +59,9 @@ def run_network(config, inputs, outputs, args):
                 bad_polls += 1
                 current_wait_time = wait_time * bad_polls
                 continue
-
-            bad_polls = 0
+            else:
+                bad_polls = 0
+                current_wait_time = wait_time
 
             for msg in msgs:
                 if not msg:
