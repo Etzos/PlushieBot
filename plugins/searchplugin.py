@@ -26,27 +26,27 @@ class SearchPlugin(PlushiePlugin):
     @plushieCmd("wiki", "wikipedia")
     @commandDoc(extra="<item to search>", doc="Has Plushie search Wikipedia for <item to search>")
     def wikiCmd(self, ctx, msg):
-        result = self.getSummary(msg.noCmdMsg(), self.BASE_URLS["wikipedia"][0])
+        result = self.getSummary(msg.noCmdMsg(), BASE_URLS["wikipedia"][0])
         if not result[0]:
             ctx.msg("Error: {:s}".format(result[1]), msg.replyTo)
         else:
             ctx.msg("Wikipedia entry for '{:s}': {:s} {:s}".format(
                 msg.noCmdMsg(),
                 result[1],
-                "{:s}{:s}".format(self.BASE_URLS['wikipedia'][1], result[2].replace(" ", "_"))
+                "{:s}{:s}".format(BASE_URLS['wikipedia'][1], result[2].replace(" ", "_"))
                 ), msg.replyTo)
 
     @plushieCmd("simplewiki", "sw")
     @commandDoc(extra="<item to search>", doc="Has Plushie search the Simple English Wiki for <item to search>")
     def neabWikiCmd(self, ctx, msg):
-        result = self.getSummary(msg.noCmdMsg(), self.BASE_URLS["simple"][0])
+        result = self.getSummary(msg.noCmdMsg(), BASE_URLS["simple"][0])
         if not result[0]:
             ctx.msg("Error: {:s}".format(result[1]), msg.replyTo)
         else:
             ctx.msg("Simple English Wiki entry for '{:s}': {:s} {:s}".format(
                 msg.noCmdMsg(),
                 result[1],
-                "{:s}{:s}".format(self.BASE_URLS['simple'][1], result[2].replace(" ", "_"))
+                "{:s}{:s}".format(BASE_URLS['simple'][1], result[2].replace(" ", "_"))
                 ), msg.replyTo)
 
     def getSummary(self, title, api):
