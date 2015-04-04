@@ -23,13 +23,13 @@ if __name__ == "__main__":
     parser.add_argument("-t", "--thread", help="run Plushie using threads instead of processes", action="store_true")
     args = parser.parse_args()
 
-    subargs = {}
+    subargs = {'debug': False}
     if args.debug:
         subargs['debug'] = True
     if args.thread:
-        from multiprocessing import Process, Queue, Pipe
+        from multiprocessing import Process, Queue
     else:
-        from multiprocessing.dummy import Process, Queue, Pipe
+        from multiprocessing.dummy import Process, Queue
 
     try:
         config = loadConfig()

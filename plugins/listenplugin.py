@@ -1,4 +1,4 @@
-from .plugin import *
+from .plugin import PlushiePlugin, plushieCmd, commandDoc
 from amarok import MprisPlaying
 
 

@@ -7,37 +7,14 @@ from pluginmanager import PluginManager
 
 
 def run_plushie(config, outputs, inputs):
-    pluginList = [
-            "celebrateplugin.CelebratePlugin",
-            "choiceplugin.ChoicePlugin",
-            "grabplugin.GrabPlugin",
-            "greetplugin.GreetPlugin",
-            "hangmanplugin.HangmanPlugin",
-            "hashplugin.HashPlugin",
-            "helpplugin.HelpPlugin",
-            "hugplugin.HugPlugin",
-            "karmaplugin.KarmaPlugin",
-            "kickplugin.KickPlugin",
-            "lastseenplugin.LastSeenPlugin",
-            "listplugin.ListPlugin",
-            "mathplugin.MathPlugin",
-            "mumbleplugin.MumblePlugin",
-            "pingplugin.PingPlugin",
-            "rpsplugin.RPSPlugin",
-            "sayplugin.SayPlugin",
-            "searchplugin.SearchPlugin",
-            "smileystats.SmileyStatsPlugin",
-            "stabplugin.StabPlugin",
-            "statplugin.StatPlugin",
-            "sysplugin.SysPlugin",
-            "timeplugin.TimePlugin",
-            "tmpplugin.TmpPlugin",
-            "werewolfplugin.WerewolfPlugin",
-        ]
+    try:
+        blacklist = config['plugin_blacklist']
+    except:
+        blacklist = []
 
     # TODO: Make PluginManager use a different approach for sending messages
     pm = PluginManager(config, outputs)
-    pm.registerPluginsFromList(pluginList)
+    pm.load_plugins(blacklist)
 
     db = sqlite3.connect("chat.db")
     db.execute("""

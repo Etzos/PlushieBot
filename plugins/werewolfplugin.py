@@ -1,10 +1,8 @@
-from .plugin import *
+from .plugin import PlushiePlugin, plushieCmd, commandDoc, plushieTick
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from math import floor
 from random import sample
-
-import sqlite3
 
 
 class WerewolfPlugin(PlushiePlugin):
@@ -52,9 +50,6 @@ class WerewolfPlugin(PlushiePlugin):
     @commandDoc(doc="Enters you into a game of Werewolf if one has yet to be started")
     def startCmd(self, ctx, msg):
         # Public ONLY
-        args = msg.getArgs()
-        numArgs = len(args)
-
         if msg.isWhisper:
             ctx.msg("Werewolf cannot be started or joined silently. Sorry.", msg.player)
             return
@@ -79,8 +74,7 @@ class WerewolfPlugin(PlushiePlugin):
             self.players.append(self.Player(msg.player))
             ctx.msg("""You have joined the current game of werewolf!
                         Please await further instructions.
-                        ({:s} until start)""".format(
-                        self.timeRemainMessage()), msg.player)
+                        ({:s} until start)""".format(self.timeRemainMessage()), msg.player)
             ctx.msg("{:s} ({:s} to join)".format(self.quorumMessage(), leftTime))
             ctx.msg("For the full game instructions/rules use !gamerules", msg.player)
         else:
@@ -344,21 +338,20 @@ class WerewolfPlugin(PlushiePlugin):
     def phaseMessage(self, includeInst=True):
         ret = "It is now {:s} of turn {:d}.".format("day" if self.isDay else "night", self.turn)
         if includeInst:
-            ret += """ {:s} should cast their vote using
-                      `/msg Plushie !vote <Player Name (Case Important!)>`""".format(
-                          "Everyone" if self.isDay else "Werewolves")
+            ret += " {:s} should cast their vote using `/msg Plushie !vote <Player Name (Case Important!)>`".format(
+                "Everyone" if self.isDay else "Werewolves")
         return ret
 
     def finalStatsMessage(self):
         return "Villagers: {:s}. Werewolves: {:s}.".format(
-                ", ".join("{:s} [{:s}]".format(p.name, p.state) for p in self.players if p.role == "villager"),
-                ", ".join("{:s} [{:s}]".format(p.name, p.state) for p in self.players if p.role == "werewolf")
-            )
+            ", ".join("{:s} [{:s}]".format(p.name, p.state) for p in self.players if p.role == "villager"),
+            ", ".join("{:s} [{:s}]".format(p.name, p.state) for p in self.players if p.role == "werewolf")
+        )
 
     def timeRemainMessage(self):
         diff = datetime.now() - self.turnChange
         time = self.phaseTime if self.gameBegun() else self.startTime
-        return "{:d} seconds remaining".format(time - diff.total_seconds())
+        return "{:.0f} seconds remaining".format(time - diff.total_seconds())
 
     def instructionsMessage(self):
         return """

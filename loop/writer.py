@@ -47,7 +47,7 @@ def write_log(logfile, backlog):
 
 
 # Everything below is no longer used externally
-def get_username(player_namer):
+def get_username(player_name):
     t = input("(Player Name)> ")
     if t != "":
         return t

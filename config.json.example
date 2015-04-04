@@ -1,6 +1,10 @@
 {
     "username": "TestPlushie",
     "password": "TestPassword",
+    "plugin_blacklist":
+    [
+        "listenplugin"
+    ],
     "plugins":
     {
         "hangman":
