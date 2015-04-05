@@ -16,8 +16,10 @@ class LastSeenPlugin(PlushiePlugin):
     @commandDoc(extra="<player> [<number>]",
                 doc="Returns <player>'s message from <number> messages ago. Without <number>, defaults to last "
                 "message they have said")
-    @commandDoc(cmd="time", extra="[<value (in seconds)>]", doc="Returns all messages both <value> seconds before and after <player>'s message")
-    @commandDoc(cmd="id", extra="[<value (in lines)>]", doc="Returns all message both <value> lines before and after <player>'s message")
+    @commandDoc(cmd="time", extra="[<value (in seconds)>]", 
+                doc="Returns all messages both <value> seconds before and after <player>'s message")
+    @commandDoc(cmd="id", extra="[<value (in lines)>]", 
+                doc="Returns all message both <value> lines before and after <player>'s message")
     def run(self, ctx, msg):
         args = msg.getArgs()
         argsLen = len(args)
@@ -60,7 +62,8 @@ class LastSeenPlugin(PlushiePlugin):
             if argsLen > 3:
                 length = int(args[3])
                 if length > 301:
-                    ctx.msg("Opening a window that large could be dangerous. Try limiting it to just 5 minutes.", msg.replyTo)
+                    ctx.msg("Opening a window that large could be dangerous. " + 
+                            "Try limiting it to just 5 minutes.", msg.replyTo)
                     return
                 if length > 301 and (msg.player == "Garth" or "WhiteKitsune"):
                     length = int(args[3])
@@ -88,7 +91,8 @@ class LastSeenPlugin(PlushiePlugin):
             if argsLen > 3:
                 diff = int(args[3])
                 if diff > 11:
-                    ctx.msg("Opening a window that large could be dangerous. Try limiting it to 10 messages.", msg.replyTo)
+                    ctx.msg("Opening a window that large could be dangerous. " + 
+                            "Try limiting it to 10 messages.", msg.replyTo)
                     return
                 if diff > 11 and (msg.player == "Garth" or "WhiteKitsune"):
                     diff = int(args[3])
