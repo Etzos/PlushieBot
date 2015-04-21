@@ -49,7 +49,7 @@ def run_plushie(config, outputs, inputs):
 
         if timediff >= tick_time:
             previous_time = current_time
-            pm.signalTick()
+            pm.signal_tick()
 
         try:
             # Wait for a message for tick_time - time elapsed (which *should* always be positive, but just in case
@@ -83,6 +83,6 @@ def run_plushie(config, outputs, inputs):
                       chat_message.whisper,
                       chat_message.msg))
             db.commit()
-            pm.signalMessage(chat_message)
+            pm.signal_message(chat_message)
         else:
             print(chat_message.raw)

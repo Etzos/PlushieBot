@@ -15,7 +15,7 @@ class PluginManager:
     """Class specifically made for managing Plushie plugins."""
 
     class CommandContext:
-        """Convience class of sorts that is passed into a plugin's method calls."""
+        """Convenience class of sorts that is passed into a plugins method calls."""
         def __init__(self, parent, message_sender):
             self.chat = message_sender
             self.parent = parent
@@ -78,16 +78,16 @@ class PluginManager:
     def register_from_list(self, plugin_list):
         """Registers a plugin given a list of plugins."""
         for plug in plugin_list:
-            self.register_from_string(plug)
+            self.register_from_str(plug)
 
-    def registerPluginFromString(self, plugin_name):
+    def register_from_str(self, plugin_name):
         """Registers a plugin given a string."""
         path, class_name = plugin_name.rsplit(".", 1)
         mod = importlib.import_module("{:s}.{:s}".format("plugins", path))
         cls = getattr(mod, class_name)
         self.register_plugin(cls())
 
-    def load_plugins(self, blacklist=[]):
+    def load_plugins(self, blacklist=None):
         """Loads plugins from the :mod:`plugins` submodule automatically.
 
         Loads all plugins from the :mod:`plugins` submodule automatically while ignoring classes included in the
@@ -96,6 +96,8 @@ class PluginManager:
         KWargs:
             blacklist (str[]): List of plugin classes to ignore.
         """
+        if not blacklist:
+            blacklist = []
         # Search the plugins directory for names matching *?plugin.py (anything in front with at least one character)
         plugins = fnmatch.filter(os.listdir("./plugins"), "*?plugin.py")
         for plugin in map(lambda n: n.split(".")[0], plugins):
@@ -103,7 +105,7 @@ class PluginManager:
                 continue
             # This is a bit hacky since I don't maintain a reference
             importlib.import_module("plugins.{!s}".format(plugin))
-        # Now that all the relavant modules have been imported, grab the plugin classes
+        # Now that all the relevant modules have been imported, grab the plugin classes
         for plugin_class in PlushiePlugin.__subclasses__():
             self.register_plugin(plugin_class())
 
@@ -116,12 +118,12 @@ class PluginManager:
         class_name = plugin.__class__.__name__
         mod = importlib.import_module(plugin.__class__.__module__)
         self.unregister_plugin(plugin)
-        newmod = importlib.reload(mod)
-        cls = getattr(newmod, class_name)
+        new_mod = importlib.reload(mod)
+        cls = getattr(new_mod, class_name)
         self.register_plugin(cls())
         return True
 
-    def signalCommand(self, message):
+    def signal_command(self, message):
         if message.isCommand():
             args = message.msgArg()
             cmd_name = args[0][1:].lower()
@@ -129,7 +131,7 @@ class PluginManager:
             if cmd_name in self.transforms:
                 parts = self.transforms[cmd_name].split(" ")
                 cmd_name = parts[0]
-                # This is some nasty joojoo; the Message gets hot-modified here
+                # This is some nasty joo joo; the Message gets hot-modified here
                 parts.extend(message.msgArg()[1:])  # For now only 1->many transforms are allowed
                 message.msg = "!" + " ".join(parts)
             if cmd_name in self.commands:
@@ -139,14 +141,14 @@ class PluginManager:
                 except:
                     plugin_error(cmd)
 
-    def signalTick(self):
+    def signal_tick(self):
         for cmd in self.tick:
             try:
                 cmd(self.ctx)
             except:
                 plugin_error(cmd)
 
-    def signalMessage(self, message):
+    def signal_message(self, message):
         # Handle messages before passing to command handling
         for handler in self.msghandlers:
             try:
@@ -155,4 +157,4 @@ class PluginManager:
                 plugin_error(handler)
 
         if message.isCommand():
-            self.signalCommand(message)
+            self.signal_command(message)

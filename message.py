@@ -1,12 +1,12 @@
 import re
 
-msgReg = re.compile('(?:\d+\:\d+) (?P<whisper>to|from)? ?' +
-                    '(?P<player>[\w\-\.\ ]+[\w\-\.])(?:(?: &gt;)|(?:&gt;)) ' +
-                    '(?P<message>.+)')
+msg_reg = re.compile('(?:\d+:\d+) (?P<whisper>to|from)? ?'
+                     '(?P<player>[\w\-\. ]+[\w\-\.])(?:(?: &gt;)|(?:&gt;)) '
+                     '(?P<message>.+)')
 tagStrip = re.compile('<[^<]+?>')
-linkRepl = re.compile('<a href=(.+?) (?:.*?)>(?:.*?)</a>', re.IGNORECASE)
-entityRepl = re.compile('&(gt|lt|amp|trade);')
-smileyRepl = re.compile('<img src=smilies/(\d+).gif align=center>')
+link_reg = re.compile('<a href=(.+?) (?:.*?)>(?:.*?)</a>', re.IGNORECASE)
+entity_reg = re.compile('&(gt|lt|amp|trade);')
+smiley_reg = re.compile('<img src=smilies/(\d+).gif align=center>')
 smileyNums = {
     "0": ":)", "1": ":P", "2": ":O", "3": ":(", "4": ":-/", "5": ";)",
     "6": ":D", "7": "8)", "8": "B)", "9": "XD", "10": "T.T", "11": "^^'",
@@ -18,12 +18,22 @@ smileyNums = {
 }
 
 
-def linkReplaceFunc(m):
+def link_replace(m):
+    """
+    A simple function for replacing links in raw messages.
+    :param m: Regexp results.
+    :return: Modified result.
+    """
     link = m.group(1)
     return link
 
 
-def htmlEntityReplaceFunc(m):
+def html_entity_replace(m):
+    """
+    Simple function for replacing html entities in raw messages.
+    :param m: Regexp results.
+    :return: Modified result.
+    """
     part = m.group(1)
     if part == "gt":
         return ">"
@@ -37,7 +47,12 @@ def htmlEntityReplaceFunc(m):
         return part
 
 
-def smileyReplaceFunc(m):
+def smiley_replace(m):
+    """
+    Simple function for replacing smilies in raw messages.
+    :param m:
+    :return:
+    """
     num = m.group(1)
     if num in smileyNums:
         return smileyNums[num]
@@ -47,9 +62,13 @@ def smileyReplaceFunc(m):
 
 
 class Message:
+    # TODO: Handle messages other than normal messages (i.e. /me commands)
 
     def __init__(self, msg):
-        # TODO: Handle messages other than normal messsages (i.e. /me commands)
+        """
+        :type msg: str
+        :arg msg: The raw message to be parsed
+        """
         self.raw = msg
         self.player = None
         self.msg = None
@@ -60,30 +79,30 @@ class Message:
         self.time = None
 
         # Replace smilies
-        msg = smileyRepl.sub(smileyReplaceFunc, msg)
+        msg = smiley_reg.sub(smiley_replace, msg)
         # Replace links
-        msg = linkRepl.sub(linkReplaceFunc, msg)
+        msg = link_reg.sub(link_replace, msg)
 
         # Remove HTML tags from the message
         tagless = tagStrip.sub("", msg)
         # TODO: This is basically a full clean message here
         #        So, other message types can be determined here and then
         #        split off.
-        parts = msgReg.search(tagless)
+        parts = msg_reg.search(tagless)
         if not parts:
             self.type = None
             return
         else:
             self.type = "msg"
 
-        partsdict = parts.groupdict()
+        parts_dict = parts.groupdict()
         # Replace HTML entities in the message
-        cleanMsg = entityRepl.sub(htmlEntityReplaceFunc, partsdict["message"])
-        self.player = partsdict["player"].replace(" ", "_")
-        self.msg = cleanMsg
+        clean_msg = entity_reg.sub(html_entity_replace, parts_dict["message"])
+        self.player = parts_dict["player"].replace(" ", "_")
+        self.msg = clean_msg
         self.time = None  # TODO: Set receive time here!
-        if partsdict["whisper"]:
-            if partsdict["whisper"] == "from":
+        if parts_dict["whisper"]:
+            if parts_dict["whisper"] == "from":
                 self.whisper = 0
             else:
                 self.whisper = -1
@@ -94,7 +113,7 @@ class Message:
         # Note: This also removes extra spaces and tabs
         return list(filter(lambda x: x and not x.isspace(), self.msg.split(" ")))
 
-    def isCommand(self, prefix="!"):
+    def isCommand(self):
         # TODO: This should probably be a little more advanced, like check for symbols after
         return True if self.type == "msg" and self.msg[:1] == "!" and self.msg[1:2] != "!" else False
 

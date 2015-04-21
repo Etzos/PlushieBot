@@ -21,6 +21,11 @@ class HelpPlugin(PlushiePlugin):
     @commandDoc(extra="<command> [subcommand]",
                 doc="Shows usage, documentation, and any subcommands of Plushie's commands")
     def retrieveDoc(self, ctx, msg):
+        """
+
+        :type ctx: pluginmanager.PluginManager.CommandContext
+        :type msg: message.Message
+        """
         args = msg.getArgs()
         numargs = len(args)
 
@@ -47,7 +52,7 @@ class HelpPlugin(PlushiePlugin):
             self.follows = args[-2:-1].lower()
 
         try:
-            self.documentation = [(x['doc'], x['extra']) for x in ctx.parent.commands[self.cmd]._doc
+            self.documentation = [(x['doc'], x['extra']) for x in ctx.parent.commands[self.cmd].plushie_doc
                                   if x['follows'] == self.follows and (x['cmd'] == self.subcmd or
                                   self.subcmd in x['alias'])][0]
         except:
@@ -55,7 +60,7 @@ class HelpPlugin(PlushiePlugin):
             return
         should_follow = None if not self.subcmd else args[-1:]
         try:
-            self.followingcmds = [x['cmd'] for x in ctx.parent.commands[self.cmd]._doc if
+            self.followingcmds = [x['cmd'] for x in ctx.parent.commands[self.cmd].plushie_doc if
                                   x['follows'] == should_follow and x['cmd']]
         except:
             ctx.msg("[Plugin:Help] Error: Could not run the comprehension for following subcommands. Contact Garth or "

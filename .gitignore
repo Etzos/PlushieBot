@@ -2,12 +2,11 @@
 __pycache__/
 *.pyc
 
-# KDevelop Files
+# IDE/Editor Files
 *.kdev4
 .kdev4/
-
-# Kate Files
 *.kate-swp
+.idea/
 
 # Program Files
 *.db
