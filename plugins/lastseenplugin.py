@@ -16,6 +16,10 @@ class LastSeenPlugin(PlushiePlugin):
     @commandDoc(extra="<player> [<number>]",
                 doc="Returns <player>'s message from <number> messages ago. Without <number>, defaults to last "
                 "message they have said")
+    @commandDoc(cmd="time", extra="[<value (in seconds)>]",
+                doc="Returns all messages both <value> seconds before and after <player>'s message")
+    @commandDoc(cmd="id", extra="[<value (in lines)>]",
+                doc="Returns all message both <value> lines before and after <player>'s message")
     def run(self, ctx, msg):
         args = msg.getArgs()
         argsLen = len(args)
@@ -52,6 +56,61 @@ class LastSeenPlugin(PlushiePlugin):
         if not said:
             ctx.msg("I haven't seen {:s} say anything{:s}.".format(args[0], "" if howMany < 2 else " that far back"),
                     msg.replyTo)
+            return
+
+        if argsLen > 2 and args[2] == "time":
+            if argsLen > 3:
+                length = int(args[3])
+                if length > 301:
+                    ctx.msg("Opening a window that large could be dangerous. " +
+                            "Try limiting it to just 5 minutes.", msg.replyTo)
+                    return
+                if length > 301 and (msg.player == "Garth" or "WhiteKitsune"):
+                    length = int(args[3])
+            else:
+                length = 60
+            query = """
+                SELECT id, speaker, whisper, message, time FROM history
+                WHERE time < datetime('{:s}', '+{:d} seconds') AND time > datetime('{:s}', '-{:d} seconds')
+                ORDER BY time DESC LIMIT 21
+                """.format(str(said[4]), length, str(said[4]), length)
+            res = self.db.execute(query)
+            print(said)
+            print(query)
+            rows = res.fetchall()
+            print(res)
+            print(rows)
+            if not rows:
+                ctx.msg("I can't see through this window. Ask WhiteKitsune to clean it for me.", msg.replyTo)
+                return
+            for x in rows:
+                ctx.msg("[{:s}] {:s}> {:s}".format(x[4], x[1], x[3]), msg.player)
+            return
+
+        if argsLen > 2 and args[2] == "id":
+            if argsLen > 3:
+                diff = int(args[3])
+                if diff > 11:
+                    ctx.msg("Opening a window that large could be dangerous. " +
+                            "Try limiting it to 10 messages.", msg.replyTo)
+                    return
+                if diff > 11 and (msg.player == "Garth" or "WhiteKitsune"):
+                    diff = int(args[3])
+            else:
+                diff = 10
+            above = int(said[0]) + diff
+            below = int(said[0]) - diff
+            res = self.db.execute("""
+                SELECT id, speaker, whisper, message, time FROM history
+                WHERE id < ? AND id > ?
+                ORDER BY time DESC
+                """, (above, below))
+            rows = res.fetchall()
+            if not rows:
+                ctx.msg("I can't see through this window. Ask WhiteKitsune to clean it for me.", msg.replyTo)
+                return
+            for x in rows:
+                ctx.msg("[{:s}] {:s}> {:s}".format(x[4], x[1], x[3]), msg.player)
             return
 
         saiddate = said[4]
