@@ -125,7 +125,7 @@ class PluginManager:
 
     def signal_command(self, message):
         if message.isCommand():
-            if message.player.lower() in map(lambda x: x.lower(), config.bans):
+            if message.player.lower() in map(lambda x: x.lower(), self.config.bans):
                 self.ctx.msg("I'm sorry {:s}, but you've been banned from using Plushie.".format(message.player))
                 return
             args = message.msgArg()

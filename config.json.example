@@ -5,6 +5,10 @@
     [
         "listenplugin"
     ],
+    "bans":
+    [
+        "playername"
+    ],
     "plugins":
     {
         "hangman":
