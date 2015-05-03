@@ -80,6 +80,13 @@ def run_network(config, inputs, outputs, args):
             else:
                 print("Unknown system message " + message[1])
         elif message[0] == 'chat':
-            c.sendMessage(message[1])
+            try:
+                c.sendMessage(message[1])
+            except:
+                # Note that if this fails here, it will run through the message getting procedure later which will
+                # handle increasing the timeout, so there's no need to fiddle with that here.
+                # Add message back to be tried again later
+                inputs.put(message)
+                print("Unable to send message '{:s}'".format(message[1]))
         else:
             print("Unknown message type '" + message[0] + "'")
